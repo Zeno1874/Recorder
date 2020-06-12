@@ -52,8 +52,7 @@
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="MIC" />
+                android:layout_centerVertical="true" />
 
             <ImageView
                 android:id="@+id/imgBtn_setting_audioSource"
@@ -89,8 +88,7 @@
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="MP3" />
+                android:layout_centerVertical="true" />
 
             <ImageView
                 android:id="@+id/imgBtn_setting_outputFileFormat"
@@ -126,8 +124,7 @@
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Double" />
+                android:layout_centerVertical="true" />
 
             <ImageView
                 android:id="@+id/imgBtn_setting_audioChannels"
@@ -163,8 +160,7 @@
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="44100Hz" />
+                android:layout_centerVertical="true" />
 
             <ImageView
                 android:id="@+id/imgBtn_setting_audioSamplingRate"

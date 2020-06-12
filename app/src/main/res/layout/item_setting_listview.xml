@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gilroy_regular"
         android:layout_margin="16dp"
-        android:text="MP3"
         android:textColor="@color/itemTextColor"
         android:textSize="12sp" />
 
