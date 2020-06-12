@@ -23,15 +23,15 @@ public class RecordConfig {
     private String OutputFilePath;
     private String OutputFileFormat;
 
-    public RecordConfig(){};
-    public RecordConfig(Context context, int AudioSource, int AudioSamplingRate, int OutputFormat, int AudioChannels, int AudioEncoder, int AudioEncodingBitRate, String OutputFileFormat){
+    public RecordConfig(){}
+    public RecordConfig(int AudioSource, int AudioSamplingRate, int OutputFormat, int AudioChannels, int AudioEncoder, int AudioEncodingBitRate,String DefaultFilePath, String OutputFileFormat){
         this.AudioSource = AudioSource;
         this.AudioSamplingRate = AudioSamplingRate;
         this.OutputFormat = OutputFormat;
         this.AudioChannels = AudioChannels;
         this.AudioEncoder = AudioEncoder;
         this.AudioEncodingBitRate = AudioEncodingBitRate;
-        this.OutputFilePath = context.getExternalCacheDir().getAbsolutePath() + "/";
+        this.OutputFilePath = DefaultFilePath;
         this.OutputFileFormat = OutputFileFormat;
     }
 

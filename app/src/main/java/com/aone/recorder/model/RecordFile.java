@@ -12,4 +12,59 @@ package com.aone.recorder.model;
  * @Desc:
  */
 public class RecordFile {
+    private String FileName;
+    private String FileFormat;
+    private String FilePath;
+    private int FileRecordLength;
+    private int FileCreatedTime;
+
+    public RecordFile(){}
+
+    public RecordFile(String FileName, String FileFormat, String FilePath, int FileRecordLength, int FileCreatedTime){
+        this.FileName = FileName;
+        this.FileFormat = FileFormat;
+        this.FilePath = FilePath;
+        this.FileRecordLength = FileRecordLength;
+        this.FileCreatedTime = FileCreatedTime;
+    }
+
+    public String getFileName() {
+        return FileName;
+    }
+
+    public void setFileName(String fileName) {
+        FileName = fileName;
+    }
+
+    public String getFileFormat() {
+        return FileFormat;
+    }
+
+    public void setFileFormat(String fileFormat) {
+        FileFormat = fileFormat;
+    }
+
+    public String getFilePath() {
+        return FilePath;
+    }
+
+    public void setFilePath(String filePath) {
+        FilePath = filePath;
+    }
+
+    public int getFileRecordLength() {
+        return FileRecordLength;
+    }
+
+    public void setFileRecordLength(int fileRecordLength) {
+        FileRecordLength = fileRecordLength;
+    }
+
+    public int getFileCreatedTime() {
+        return FileCreatedTime;
+    }
+
+    public void setFileCreatedTime(int fileCreatedTime) {
+        FileCreatedTime = fileCreatedTime;
+    }
 }
