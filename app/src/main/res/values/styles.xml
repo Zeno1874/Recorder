@@ -9,4 +9,15 @@
         <item name="colorAccent">@color/secondaryColor</item>
     </style>
 
+    <style name="SettingItem" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:fontFamily">@font/gilroy_regular</item>
+    </style>
+
+    <style name="SettingItemTitle" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:fontFamily">@font/gilroy_regular</item>
+    </style>
 </resources>

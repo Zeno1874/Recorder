@@ -7,9 +7,10 @@
     <color name="secondaryLightColor">#5c5c5c</color>
     <color name="secondaryDarkColor">#0c0c0c</color>
 
-    <color name="primaryTextColor">#ffffff</color>
+    <color name="primaryTextColor">#3db9a0</color>
     <color name="secondaryTextColor">#707070</color>
     <color name="timerTextColor">#54FFDD</color>
+    <color name="itemTextColor">#8F6418</color>
 
     <color name="background">333333</color>
 </resources>

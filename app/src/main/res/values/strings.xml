@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Recorder</string>
-    <string name="record_list_title">Record List</string>
+
+    <!-- activity_list.xml -->
+    <string name="activity_record_list_title">Record List</string>
+
+    <!-- activity_setting.xml -->
+    <string name="activity_record_setting_title">Setting</string>
+
+    <string name="recording_source_title">Recording Source</string>
+    <string name="recording_format_title">Recording File Format</string>
+    <string name="recording_channels_title">Recording Channels</string>
+    <string name="recording_sampling_rate_title">Recording Sampling Rate</string>
 </resources>

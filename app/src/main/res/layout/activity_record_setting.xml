@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context=".activities.RecordSettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/imgBtn_setting2record"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_arrow_left" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy_regular"
+            android:text="@string/activity_record_setting_title"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            style="@style/SettingItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recording_source_title" />
+
+        <RelativeLayout
+            android:id="@+id/rl_setting_audioSource_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tv_setting_audioSource"
+                style="@style/SettingItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="MIC" />
+
+            <ImageView
+                android:id="@+id/imgBtn_setting_audioSource"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/btn_arrow_right" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/lv_setting_audioSource"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+
+        <TextView
+            style="@style/SettingItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/recording_format_title" />
+
+        <RelativeLayout
+            android:id="@+id/rl_setting_outputFileFormat_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tv_setting_outputFileFormat"
+                style="@style/SettingItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="MP3" />
+
+            <ImageView
+                android:id="@+id/imgBtn_setting_outputFileFormat"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/btn_arrow_right" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/lv_setting_outputFileFormat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+
+        <TextView
+            style="@style/SettingItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/recording_channels_title" />
+
+        <RelativeLayout
+            android:id="@+id/rl_setting_audioChannels_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tv_setting_audioChannels"
+                style="@style/SettingItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Double" />
+
+            <ImageView
+                android:id="@+id/imgBtn_setting_audioChannels"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/btn_arrow_right" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/lv_setting_audioChannels"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+
+        <TextView
+            style="@style/SettingItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/recording_sampling_rate_title" />
+
+        <RelativeLayout
+            android:id="@+id/rl_setting_audioSamplingRate_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tv_setting_audioSamplingRate"
+                style="@style/SettingItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="44100Hz" />
+
+            <ImageView
+                android:id="@+id/imgBtn_setting_audioSamplingRate"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/btn_arrow_right" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/lv_setting_audioSamplingRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>
