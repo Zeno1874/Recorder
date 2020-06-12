@@ -10,4 +10,6 @@
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#707070</color>
     <color name="timerTextColor">#54FFDD</color>
+
+    <color name="background">333333</color>
 </resources>

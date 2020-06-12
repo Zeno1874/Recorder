@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Recorder</string>
+    <string name="record_list_title">Record List</string>
 </resources>
