@@ -99,7 +99,7 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
         imgBtn_setting_audioSamplingRate = findViewById(R.id.imgBtn_setting_audioSamplingRate);
 
         // ListView
-        imgBtn_setting_audioSource = findViewById(R.id.imgBtn_setting_audioSource);
+        lv_setting_audioSource = findViewById(R.id.lv_setting_audioSource);
         lv_setting_outputFileFormat = findViewById(R.id.lv_setting_outputFileFormat);
         lv_setting_audioChannels = findViewById(R.id.lv_setting_audioChannels);
         lv_setting_audioSamplingRate = findViewById(R.id.lv_setting_audioSamplingRate);
