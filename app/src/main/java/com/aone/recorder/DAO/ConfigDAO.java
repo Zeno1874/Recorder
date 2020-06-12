@@ -35,6 +35,7 @@ public class ConfigDAO {
         values.put("AudioChannels", 2);
         values.put("AudioEncoder", MediaRecorder.AudioEncoder.DEFAULT);
         values.put("AudioEncodingBitRate", 192000);
+        values.put("DefaultFilePath", context.getExternalCacheDir().getAbsolutePath() + "/");
         values.put("OutputFileFormat", "MP3");
 
         db.insert(CONFIG_TABLE_NAME,null,values);
