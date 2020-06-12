@@ -1,7 +1,5 @@
 package com.aone.recorder.model;
 
-import android.content.Context;
-
 /**
  * @ProjectName: Recorder
  * @Package: com.aone.recorder.model
@@ -24,7 +22,7 @@ public class RecordConfig {
     private String OutputFileFormat;
 
     public RecordConfig(){}
-    public RecordConfig(int AudioSource, int AudioSamplingRate, int OutputFormat, int AudioChannels, int AudioEncoder, int AudioEncodingBitRate,String DefaultFilePath, String OutputFileFormat){
+    public RecordConfig(int AudioSource, int AudioSamplingRate, int OutputFormat, int AudioChannels, int AudioEncoder, int AudioEncodingBitRate, String DefaultFilePath, String OutputFileFormat){
         this.AudioSource = AudioSource;
         this.AudioSamplingRate = AudioSamplingRate;
         this.OutputFormat = OutputFormat;
