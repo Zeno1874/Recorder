@@ -26,7 +26,7 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
     private static final String TAG = RecordSettingActivity.class.getSimpleName();
 
     private List<String> AudioSourceList = Arrays.asList("MIC", "VOICE UPLINK", "VOICE DOWNLINK", "VOICE CALL", "VOICE RECOGNITION", "VOICE COMMUNICATION");
-    private List<String> OutputFileFormatList = Arrays.asList("MP3", "WAV", "AAC", "AMR");
+    private List<String> OutputFileFormatList = Arrays.asList("MP3", "WAVE", "AAC", "AMR");
     private List<String> AudioChannelsList = Arrays.asList("Single", "Double");
     private List<String> AudioSamplingRateList = Arrays.asList("11025Hz", "22050Hz", "24000Hz", "44100Hz", "48000Hz");
     // 录音配置
@@ -59,8 +59,6 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
     private boolean lv_setting_outputFileFormat_state = true;
     private boolean lv_setting_audioChannels_state = true;
     private boolean lv_setting_audioSamplingRate_state = true;
-
-    private SettingListViewAdapter mSettingListViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

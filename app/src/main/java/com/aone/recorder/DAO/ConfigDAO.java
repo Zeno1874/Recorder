@@ -18,7 +18,7 @@ import android.media.MediaRecorder;
  * @Desc: 配置数据表相关操作，该表仅能修改与查询，有且仅有一行数据，只允许在第一次运行时写入。
  */
 public class ConfigDAO {
-    public static final String CONFIG_TABLE_NAME = "config";
+    public static final String CONFIG_TABLE_NAME = "RecordConfig";
 
     /**
      * 初始化配置数据表
@@ -65,7 +65,7 @@ public class ConfigDAO {
     public Cursor queryConfig(Context context){
         DBHelper dbHelper = new DBHelper(context,"recorder",null,1);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.query(CONFIG_TABLE_NAME, new String[]{"AudioSource", "AudioSamplingRate", "OutputFormat", "AudioChannels", "AudioEncoder", "AudioEncodingBitRate", "OutputFileFormat"}, null, null, null, null, null);
+        Cursor cursor = db.query(CONFIG_TABLE_NAME, new String[]{"AudioSource", "AudioSamplingRate", "OutputFormat", "AudioChannels", "AudioEncoder", "AudioEncodingBitRate", "DefaultFilePath", "OutputFileFormat"}, null, null, null, null, null);
         cursor.moveToNext();
         return cursor;
     }

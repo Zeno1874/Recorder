@@ -12,5 +12,5 @@
     <color name="timerTextColor">#54FFDD</color>
     <color name="itemTextColor">#8F6418</color>
 
-    <color name="background">333333</color>
+    <color name="background">#333333</color>
 </resources>
