@@ -2,16 +2,11 @@ package com.aone.recorder.utils;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
-import android.widget.AdapterView;
 
 import com.aone.recorder.DAO.RecordFileDAO;
 import com.aone.recorder.model.RecordFile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -55,7 +50,7 @@ public class RecordFileUtil {
         List<Double> RecordDBs = new ArrayList<>();
         List<Double> temp = new ArrayList<>();
         List<Double> finalDBs = new ArrayList<>();
-        if (null == strRecordDBs){
+        if (null == strRecordDBs) {
             finalDBs.add(0.0);
             return finalDBs;
         }
@@ -67,7 +62,7 @@ public class RecordFileUtil {
             RecordDBs.add(Double.parseDouble(str));
         }
 
-        if (max == 0){
+        if (max == 0) {
             return RecordDBs;
         }
 

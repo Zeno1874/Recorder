@@ -18,6 +18,7 @@ public class RecordFile {
     private String FileRecordLength;
     private String FileCreatedTime;
     private String FileDBs;
+
     public RecordFile() {
     }
 

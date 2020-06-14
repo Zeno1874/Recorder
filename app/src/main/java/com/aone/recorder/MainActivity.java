@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void StopRecord() {
         // 将文件记录写入SQLite
         StringBuilder str = new StringBuilder();
-        for (int i = 0;i<RecordDBs.size();i++)
+        for (int i = 0; i < RecordDBs.size(); i++)
             str.append(RecordDBs.get(i)).append(" ");
         RecordDBs.clear();
         Log.e(TAG, str.toString());

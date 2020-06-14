@@ -13,13 +13,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.media.MediaPlayer;
 import android.media.audiofx.Visualizer;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
-import com.aone.recorder.model.AudioData;
 import com.aone.recorder.model.FFTData;
 import com.aone.recorder.views.render.Renderer;
 

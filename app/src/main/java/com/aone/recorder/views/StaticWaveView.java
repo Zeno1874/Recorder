@@ -27,14 +27,10 @@ public class StaticWaveView extends View {
     private static final String TAG = StaticWaveView.class.getSimpleName();
 
     private List<Double> mData;
-    //    private byte[] mBytes;
-    private Rect mRect = new Rect();
 
     private Paint mPaint = new Paint();
 
-    private double mSpace;
     private double mWidth;
-    private double mHeight;
 
     public StaticWaveView(Context context) {
         super(context);
@@ -73,7 +69,7 @@ public class StaticWaveView extends View {
         canvas.drawColor(Color.argb(0, 0, 0, 0));
         if (mData == null)
             return;
-        mSpace = (Width - mWidth * mData.size()) / (mData.size() - 1);
+        double space = (Width - mWidth * mData.size()) / (mData.size() - 1);
         float left = 0;
         float top;
         float right;
@@ -81,48 +77,17 @@ public class StaticWaveView extends View {
         for (double data : mData) {
             if (data != 0) {
                 top = (float) (Height - Height * data);
-//                top= 0;
                 right = (float) (left + mWidth);
                 bottom = (float) Height;
                 @SuppressLint("DrawAllocation") RectF rect = new RectF(left, top, right, bottom);
                 canvas.drawRect(rect, mPaint);
-                left = (float) (right + mSpace);
+                left = (float) (right + space);
             } else {
-
                 float x = (float) (left + mWidth);
                 float y = (float) Height;
                 canvas.drawPoint(x, y, mPaint);
-                left = (float) (x + mSpace);
+                left = (float) (x + space);
             }
         }
-
-//        if (mData == null) {
-//            return;
-//        }
-//
-//        if (mPoints == null || mPoints.length < mData.size() * 4) {
-//            mPoints = new float[mBytes.length * 4];
-//        }
-//
-//        mRect.set(0, 0, getWidth(), getHeight());
-//        //绘制柱形频谱
-//        final int baseX = mRect.width() / mSpectrumNum;
-//        final int height = mRect.height();
-//
-//        for (int i = 0; i < mSpectrumNum; i++) {
-//            if (mBytes[i] < 0) {
-//                mBytes[i] = 127;
-//            }
-//            final int xi = baseX * i + baseX / 2;
-//
-//            mPoints[i * 4] = xi;
-//            mPoints[i * 4 + 1] = height;
-//
-//            mPoints[i * 4 + 2] = xi;
-//            mPoints[i * 4 + 3] = height - mBytes[i];
-//        }
-//        canvas.drawLines(mPoints, mForePaint);
     }
-
-
 }
