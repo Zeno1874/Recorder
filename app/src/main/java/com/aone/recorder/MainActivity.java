@@ -28,6 +28,8 @@ import com.aone.recorder.utils.RecordFileUtil;
 import com.aone.recorder.views.DynamicWaveView;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecordConfigDAO mRecordConfigDAO;
     private RecordConfig mRecordConfig;
     private boolean RecordState = true;
-
+    private List<Integer> RecordDBs;
     // 计时器
     private Timer mTimer;
     private long baseTimer;
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecordConfig = RecordConfigUtil.getRecordConfig(this);
 
         mHandler = new Handler();
-
+        RecordDBs = new ArrayList<>();
         initView();
         setEvent();
 
@@ -207,15 +209,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            mDynamicWaveView.addSpectrum(mAudioRecorder.updateMicStatus());
+            int db = mAudioRecorder.updateMicStatus();
+            RecordDBs.add(db);
+            mDynamicWaveView.addSpectrum(db);
             mHandler.postDelayed(this, 100);
         }
     };
 
     private void StopRecord() {
         // 将文件记录写入SQLite
+        StringBuilder str = new StringBuilder();
+        for (int i = 0;i<RecordDBs.size();i++)
+            str.append(RecordDBs.get(i)).append(" ");
+        RecordDBs.clear();
+        Log.e(TAG, str.toString());
         RecordFile recordFile = mAudioRecorder.getRecordFile();
         recordFile.setFileRecordLength(TIMER_RECORD);
+        recordFile.setFileDBs(str.toString());
         RecordFileUtil.addFileRecord(this, recordFile);
         // 停止AudioRecorder
         mAudioRecorder.stop();

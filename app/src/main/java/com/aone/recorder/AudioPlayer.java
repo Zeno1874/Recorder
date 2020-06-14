@@ -2,11 +2,11 @@ package com.aone.recorder;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.audiofx.Visualizer;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-
 
 import com.aone.recorder.views.VisualizerView;
 import com.aone.recorder.views.render.BarGraphRenderer;
@@ -24,7 +24,7 @@ import java.io.IOException;
  * @Date: 2020/6/14 6:11
  * @Desc:
  */
-public class AudioPlayer extends MediaPlayer {
+public class AudioPlayer extends MediaPlayer implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
     private static final String TAG = AudioPlayer.class.getSimpleName();
     private MediaPlayer mMediaPlayer;
 
@@ -32,18 +32,24 @@ public class AudioPlayer extends MediaPlayer {
 
     private View mView;
     private VisualizerView mVisualizerView;
-    private ImageButton imgBtn;
-    private boolean imgBtn_state = true;
+    private Visualizer mVisualizer;
+    private ImageButton mImageButtonPlay,
+            mImageButtonPause;
 
     public AudioPlayer(String FilePath, View view) {
         this.FilePath = FilePath;
         this.mView = view;
+        mVisualizerView = mView.findViewById(R.id.visualizerView);
+        mImageButtonPlay = mView.findViewById(R.id.imgBtn_play_state);
+        mImageButtonPause = mView.findViewById(R.id.imgBtn_pause_state);
+
+
     }
 
     public void start() {
         try {
             initPlay();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -54,42 +60,29 @@ public class AudioPlayer extends MediaPlayer {
             mMediaPlayer.reset();
             mMediaPlayer.release();
         }
-
-        mVisualizerView.clearRenderers();
-        mVisualizerView.release();
+        showPlayImageButton();
     }
 
     private void initPlay() throws IOException {
-        destroyMediaPlayer();
+//        destroyMediaPlayer();
 
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setDataSource(FilePath);
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer.prepareAsync();
+//        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.prepare();
+        mVisualizer = new Visualizer(mMediaPlayer.getAudioSessionId());
         mMediaPlayer.setOnPreparedListener(new OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mMediaPlayer.start();
 
-                mVisualizerView = mView.findViewById(R.id.visualizerView);
-                mVisualizerView.link(mMediaPlayer);
+                mVisualizerView.link(mVisualizer);
                 addBarGraphRenderers();
-
-                imgBtn = mView.findViewById(R.id.imgBtn_state);
-                imgBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (imgBtn_state) {
-                            mMediaPlayer.pause();
-                            imgBtn.setImageResource(R.drawable.btn_play);
-                        } else {
-                            mMediaPlayer.start();
-                            imgBtn.setImageResource(R.drawable.btn_pause);
-                        }
-                    }
-                });
             }
         });
+
+        mMediaPlayer.setOnCompletionListener(this);
+        mMediaPlayer.setOnErrorListener(this);
     }
 
     private void destroyMediaPlayer() {
@@ -104,6 +97,7 @@ public class AudioPlayer extends MediaPlayer {
     }
 
 
+
     private void addBarGraphRenderers() {
         Paint paint = new Paint();
         paint.setStrokeWidth(10f);
@@ -113,4 +107,22 @@ public class AudioPlayer extends MediaPlayer {
         mVisualizerView.addRenderer(barGraphRendererBottom);
     }
 
+    private void showPlayImageButton(){
+        mImageButtonPlay.setVisibility(View.VISIBLE);
+        mImageButtonPause.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        stop();
+//        mVisualizerView.flash();
+        mVisualizerView.release();
+        Log.e(TAG,"Media Play Completed");
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        Log.e(TAG,"Media Play Error Code: " + what);
+        return false;
+    }
 }

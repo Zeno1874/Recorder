@@ -16,6 +16,7 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.media.audiofx.Visualizer;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.aone.recorder.model.AudioData;
@@ -64,25 +65,59 @@ public class VisualizerView extends View {
         mBytes = null;
         mFFTBytes = null;
 
-        mFlashPaint.setColor(Color.argb(122, 255, 255, 255));
+        mFlashPaint.setColor(Color.parseColor("#333333"));
         mFadePaint.setColor(Color.argb(238, 255, 255, 255)); // Adjust alpha to change how quickly the image fades
         mFadePaint.setXfermode(new PorterDuffXfermode(Mode.MULTIPLY));
 
         mRenderers = new HashSet<>();
     }
 
-    /**
-     * Links the visualizer to a player
-     *
-     * @param player - MediaPlayer instance to link to
-     */
-    public void link(MediaPlayer player) {
-        if (player == null) {
-            throw new NullPointerException("Cannot link to null MediaPlayer");
-        }
+//    /**
+//     * Links the visualizer to a player
+//     *
+//     * @param player - MediaPlayer instance to link to
+//     */
+//    public void link(MediaPlayer player) {
+//        if (player == null) {
+//            throw new NullPointerException("Cannot link to null MediaPlayer");
+//        }
+//
+//        // Create the Visualizer object and attach it to our media player.
+//        mVisualizer = new Visualizer(player.getAudioSessionId());
+//        mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
+//
+//        // Pass through Visualizer data to VisualizerView
+//        Visualizer.OnDataCaptureListener captureListener = new Visualizer.OnDataCaptureListener() {
+//            @Override
+//            public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes,
+//                                              int samplingRate) {
+//                updateVisualizer(bytes);
+//            }
+//
+//            @Override
+//            public void onFftDataCapture(Visualizer visualizer, byte[] bytes,
+//                                         int samplingRate) {
+//                updateVisualizerFFT(bytes);
+//            }
+//        };
+//
+//        mVisualizer.setDataCaptureListener(captureListener,
+//                Visualizer.getMaxCaptureRate() / 2, true, true);
+//
+//        // Enabled Visualizer and disable when we're done with the stream
+//        mVisualizer.setEnabled(true);
+//        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+//                Log.e(TAG,"Media Play Completed");
+//                mVisualizer.setEnabled(false);
+//            }
+//        });
+//    }
 
+    public void link(Visualizer visualizer) {
+        mVisualizer = visualizer;
         // Create the Visualizer object and attach it to our media player.
-        mVisualizer = new Visualizer(player.getAudioSessionId());
         mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
 
         // Pass through Visualizer data to VisualizerView
@@ -105,12 +140,6 @@ public class VisualizerView extends View {
 
         // Enabled Visualizer and disable when we're done with the stream
         mVisualizer.setEnabled(true);
-        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                mVisualizer.setEnabled(false);
-            }
-        });
     }
 
     public void addRenderer(Renderer renderer) {
@@ -184,13 +213,13 @@ public class VisualizerView extends View {
             mCanvas = new Canvas(mCanvasBitmap);
         }
 
-        if (mBytes != null) {
-            // Render all audio renderers
-            AudioData audioData = new AudioData(mBytes);
-            for (Renderer r : mRenderers) {
-                r.render(mCanvas, audioData, mRect);
-            }
-        }
+//        if (mBytes != null) {
+//            // Render all audio renderers
+//            AudioData audioData = new AudioData(mBytes);
+//            for (Renderer r : mRenderers) {
+//                r.render(mCanvas, audioData, mRect);
+//            }
+//        }
 
         if (mFFTBytes != null) {
             // Render all FFT renderers
