@@ -25,8 +25,8 @@ import java.util.List;
  * @Date: 2020/6/13 2:06
  * @Desc:
  */
-public class WaveView extends View {
-    private static final String TAG = WaveView.class.getSimpleName();
+public class DynamicWaveView extends View {
+    private static final String TAG = DynamicWaveView.class.getSimpleName();
 
     private static final int DEFAULT_COLOR = Color.parseColor("#3DB9A0");
 
@@ -71,23 +71,23 @@ public class WaveView extends View {
 
     private boolean ViewState;
 
-    public WaveView(Context context) {
+    public DynamicWaveView(Context context) {
         super(context);
         init();
     }
 
-    public WaveView(Context context, AttributeSet attrs) {
+    public DynamicWaveView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
     @SuppressLint("RestrictedApi")
-    public WaveView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DynamicWaveView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TintTypedArray typedArray = TintTypedArray.obtainStyledAttributes(context, attrs, R.styleable.WaveView, defStyleAttr, 0);
-        color = typedArray.getColor(R.styleable.WaveView_rectColor, DEFAULT_COLOR);
-        noteWidth = typedArray.getDimension(R.styleable.WaveView_rectWidth, DEFAULT_NOTE_WIDTH);
-        space = typedArray.getDimension(R.styleable.WaveView_rectSpace, DEFAULT_SPACE_WIDTH);
-        line = typedArray.getDimension(R.styleable.WaveView_middleLine, DEFAULT_LINE_SIZE);
+        TintTypedArray typedArray = TintTypedArray.obtainStyledAttributes(context, attrs, R.styleable.DynamicWaveView, defStyleAttr, 0);
+        color = typedArray.getColor(R.styleable.DynamicWaveView_rectColor, DEFAULT_COLOR);
+        noteWidth = typedArray.getDimension(R.styleable.DynamicWaveView_rectWidth, DEFAULT_NOTE_WIDTH);
+        space = typedArray.getDimension(R.styleable.DynamicWaveView_rectSpace, DEFAULT_SPACE_WIDTH);
+        line = typedArray.getDimension(R.styleable.DynamicWaveView_middleLine, DEFAULT_LINE_SIZE);
         typedArray.recycle();
 
 //        reflectionColor = color - 0xC0000000;
