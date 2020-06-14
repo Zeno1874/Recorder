@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String create_config_db_sql = "create table if not exists " + CONFIG_TABLE_NAME +" (id integer primary key, AudioSource integer, AudioSamplingRate integer, OutputFormat integer, AudioChannels integer, AudioEncoder integer, AudioEncodingBitRate integer, DefaultFilePath text, OutputFileFormat text)";
-        String create_list_db_sql = "create table if not exists " + LIST_TABLE_NAME +" (id integer primary key, FileName text, FileFormat text, FilePath text, FileRecordLength int, FileCreatedTime date)";
+        String create_list_db_sql = "create table if not exists " + LIST_TABLE_NAME +" (id integer primary key, FileName text, FileFormat text, FilePath text, FileRecordLength text, FileCreatedTime text)";
         db.execSQL(create_config_db_sql);
         db.execSQL(create_list_db_sql);
     }
