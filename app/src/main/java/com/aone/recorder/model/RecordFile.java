@@ -15,12 +15,12 @@ public class RecordFile {
     private String FileName;
     private String FileFormat;
     private String FilePath;
-    private int FileRecordLength;
-    private int FileCreatedTime;
+    private String FileRecordLength;
+    private String FileCreatedTime;
 
     public RecordFile(){}
 
-    public RecordFile(String FileName, String FileFormat, String FilePath, int FileRecordLength, int FileCreatedTime){
+    public RecordFile(String FileName, String FileFormat, String FilePath, String FileRecordLength, String FileCreatedTime){
         this.FileName = FileName;
         this.FileFormat = FileFormat;
         this.FilePath = FilePath;
@@ -52,19 +52,19 @@ public class RecordFile {
         FilePath = filePath;
     }
 
-    public int getFileRecordLength() {
+    public String getFileRecordLength() {
         return FileRecordLength;
     }
 
-    public void setFileRecordLength(int fileRecordLength) {
+    public void setFileRecordLength(String fileRecordLength) {
         FileRecordLength = fileRecordLength;
     }
 
-    public int getFileCreatedTime() {
+    public String getFileCreatedTime() {
         return FileCreatedTime;
     }
 
-    public void setFileCreatedTime(int fileCreatedTime) {
+    public void setFileCreatedTime(String fileCreatedTime) {
         FileCreatedTime = fileCreatedTime;
     }
 }
