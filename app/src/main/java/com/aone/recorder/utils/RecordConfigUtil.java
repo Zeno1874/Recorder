@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.media.MediaRecorder;
 
-import com.aone.recorder.DAO.ConfigDAO;
+import com.aone.recorder.DAO.RecordConfigDAO;
 import com.aone.recorder.model.RecordConfig;
 
 /**
@@ -21,17 +21,20 @@ import com.aone.recorder.model.RecordConfig;
 public class RecordConfigUtil {
     public static RecordConfig getRecordConfig(Context context){
         // 初始化数据库
-        ConfigDAO configDAO = new ConfigDAO();
+        RecordConfigDAO recordConfigDAO = new RecordConfigDAO(context);
         // 获取配置数据
-        Cursor ConfigCursor = configDAO.queryConfig(context);
-        return new RecordConfig(ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioSource")),
-                                ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioSamplingRate")),
-                                ConfigCursor.getInt(ConfigCursor.getColumnIndex("OutputFormat")),
-                                ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioChannels")),
-                                ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioEncoder")),
-                                ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioEncodingBitRate")),
-                                ConfigCursor.getString(ConfigCursor.getColumnIndex("DefaultFilePath")),
-                                ConfigCursor.getString(ConfigCursor.getColumnIndex("OutputFileFormat")));
+        Cursor ConfigCursor = recordConfigDAO.queryConfig();
+
+        RecordConfig recordConfig = new RecordConfig(ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioSource")),
+                                                     ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioSamplingRate")),
+                                                     ConfigCursor.getInt(ConfigCursor.getColumnIndex("OutputFormat")),
+                                                     ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioChannels")),
+                                                     ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioEncoder")),
+                                                     ConfigCursor.getInt(ConfigCursor.getColumnIndex("AudioEncodingBitRate")),
+                                                     ConfigCursor.getString(ConfigCursor.getColumnIndex("DefaultFilePath")),
+                                                     ConfigCursor.getString(ConfigCursor.getColumnIndex("OutputFileFormat")));
+        recordConfigDAO.close();
+        return recordConfig;
     }
 
     public static String decodeAudioSource(int audioSourceCode){
