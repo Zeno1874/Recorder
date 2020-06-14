@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="WaveView">
+    <declare-styleable name="DynamicWaveView">
         <attr name="rectColor" format="color"/>
         <attr name="rectWidth" format="dimension"/>
         <attr name="rectSpace" format="dimension"/>

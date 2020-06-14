@@ -11,4 +11,7 @@
     <string name="recording_format_title">Recording File Format</string>
     <string name="recording_channels_title">Recording Channels</string>
     <string name="recording_sampling_rate_title">Recording Sampling Rate</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="more">More</string>
 </resources>

@@ -85,7 +85,7 @@
 
             </LinearLayout>
 
-            <com.aone.recorder.views.WaveView
+            <com.aone.recorder.views.DynamicWaveView
                 android:id="@+id/waveView"
                 android:layout_width="match_parent"
                 android:layout_height="390dp"

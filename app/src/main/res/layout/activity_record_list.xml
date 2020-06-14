@@ -34,4 +34,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/tv_notice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/gilroy_regular"
+        android:gravity="center"
+        android:text="Nothing in here"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="32sp" />
+
+
 </LinearLayout>
