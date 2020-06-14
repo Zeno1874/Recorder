@@ -12,8 +12,7 @@ package com.aone.recorder.model;
  * @Desc:
  */
 public class AudioData {
-    public AudioData(byte[] bytes)
-    {
+    public AudioData(byte[] bytes) {
         this.bytes = bytes;
     }
 

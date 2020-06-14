@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.aone.recorder.DAO.RecordConfigDAO;
 import com.aone.recorder.MainActivity;
 import com.aone.recorder.R;
-import com.aone.recorder.adpater.SettingListViewAdapter;
+import com.aone.recorder.adapter.SettingListViewAdapter;
 import com.aone.recorder.model.RecordConfig;
 import com.aone.recorder.utils.RecordConfigUtil;
 
@@ -32,22 +32,22 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
     private RecordConfig mRecordConfig;
 
     private String dp_outputFileFormat,
-                   dp_audioChannels,
-                   dp_audioSamplingRate;
+            dp_audioChannels,
+            dp_audioSamplingRate;
     // 控件变量
     private ImageButton imgBtn_setting2record;
     private RelativeLayout rl_setting_outputFileFormat_select,
-                           rl_setting_audioChannels_select,
-                           rl_setting_audioSamplingRate_select;
+            rl_setting_audioChannels_select,
+            rl_setting_audioSamplingRate_select;
     private TextView tv_setting_outputFileFormat,
-                     tv_setting_audioChannels,
-                     tv_setting_audioSamplingRate;
+            tv_setting_audioChannels,
+            tv_setting_audioSamplingRate;
     private ImageView imgBtn_setting_outputFileFormat,
-                      imgBtn_setting_audioChannels,
-                      imgBtn_setting_audioSamplingRate;
+            imgBtn_setting_audioChannels,
+            imgBtn_setting_audioSamplingRate;
     private ListView lv_setting_outputFileFormat,
-                     lv_setting_audioChannels,
-                     lv_setting_audioSamplingRate;
+            lv_setting_audioChannels,
+            lv_setting_audioSamplingRate;
     private boolean lv_setting_outputFileFormat_state = true;
     private boolean lv_setting_audioChannels_state = true;
     private boolean lv_setting_audioSamplingRate_state = true;
@@ -65,14 +65,15 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
         setEvent();
     }
 
-    public void setEvent(){
+    public void setEvent() {
         rl_setting_outputFileFormat_select.setOnClickListener(this);
         rl_setting_audioChannels_select.setOnClickListener(this);
         rl_setting_audioSamplingRate_select.setOnClickListener(this);
 
         imgBtn_setting2record.setOnClickListener(this);
     }
-    private void initView(){
+
+    private void initView() {
         // 选择框
         rl_setting_outputFileFormat_select = findViewById(R.id.rl_setting_outputFileFormat_select);
         rl_setting_audioChannels_select = findViewById(R.id.rl_setting_audioChannels_select);
@@ -96,6 +97,7 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
         tv_setting_audioChannels.setText(dp_audioChannels);
         tv_setting_audioSamplingRate.setText(dp_audioSamplingRate);
     }
+
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -106,7 +108,7 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
                 startActivity(intent);
                 break;
             case R.id.rl_setting_outputFileFormat_select:
-                if (lv_setting_outputFileFormat_state){
+                if (lv_setting_outputFileFormat_state) {
                     imgBtn_setting_outputFileFormat.setImageResource(R.drawable.btn_arrow_down);
                     lv_setting_outputFileFormat.setVisibility(View.VISIBLE);
                     // 设置适配器
@@ -122,14 +124,14 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
                             lv_setting_outputFileFormat.setVisibility(View.GONE);
                         }
                     });
-                }else {
+                } else {
                     imgBtn_setting_outputFileFormat.setImageResource(R.drawable.btn_arrow_right);
                     lv_setting_outputFileFormat.setVisibility(View.GONE);
                 }
                 lv_setting_outputFileFormat_state = !lv_setting_outputFileFormat_state;
                 break;
             case R.id.rl_setting_audioChannels_select:
-                if (lv_setting_audioChannels_state){
+                if (lv_setting_audioChannels_state) {
                     imgBtn_setting_audioChannels.setImageResource(R.drawable.btn_arrow_down);
                     lv_setting_audioChannels.setVisibility(View.VISIBLE);
                     // 设置适配器
@@ -145,14 +147,14 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
                             lv_setting_audioChannels.setVisibility(View.GONE);
                         }
                     });
-                }else {
+                } else {
                     imgBtn_setting_audioChannels.setImageResource(R.drawable.btn_arrow_right);
                     lv_setting_audioChannels.setVisibility(View.GONE);
                 }
                 lv_setting_audioChannels_state = !lv_setting_audioChannels_state;
                 break;
             case R.id.rl_setting_audioSamplingRate_select:
-                if (lv_setting_audioSamplingRate_state){
+                if (lv_setting_audioSamplingRate_state) {
                     imgBtn_setting_audioSamplingRate.setImageResource(R.drawable.btn_arrow_down);
                     lv_setting_audioSamplingRate.setVisibility(View.VISIBLE);
                     // 设置适配器
@@ -168,7 +170,7 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
                             lv_setting_audioSamplingRate.setVisibility(View.GONE);
                         }
                     });
-                }else {
+                } else {
                     imgBtn_setting_audioSamplingRate.setImageResource(R.drawable.btn_arrow_right);
                     lv_setting_audioSamplingRate.setVisibility(View.GONE);
                 }
@@ -177,7 +179,7 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    public void initConfig(){
+    public void initConfig() {
         dp_outputFileFormat = RecordConfigUtil.decodeOutputFileFormat(mRecordConfig.getOutputFileFormat());
         dp_audioChannels = RecordConfigUtil.decodeAudioChannels(mRecordConfig.getAudioChannels());
         dp_audioSamplingRate = RecordConfigUtil.decodeAudioSamplingRate(mRecordConfig.getAudioSamplingRate());

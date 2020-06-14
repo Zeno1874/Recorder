@@ -18,9 +18,10 @@ public class RecordFile {
     private String FileRecordLength;
     private String FileCreatedTime;
 
-    public RecordFile(){}
+    public RecordFile() {
+    }
 
-    public RecordFile(String FileName, String FileFormat, String FilePath, String FileRecordLength, String FileCreatedTime){
+    public RecordFile(String FileName, String FileFormat, String FilePath, String FileRecordLength, String FileCreatedTime) {
         this.FileName = FileName;
         this.FileFormat = FileFormat;
         this.FilePath = FilePath;

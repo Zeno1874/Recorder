@@ -96,7 +96,7 @@ public class DynamicWaveView extends View {
     }
 
     private void init() {
-        //初始化画笔
+        // 初始化画笔
         paint = new Paint();
         reflectionPaint = new Paint();
 
@@ -110,18 +110,18 @@ public class DynamicWaveView extends View {
         float width = getMeasuredWidth();
         float height = getMeasuredHeight();
         if (ViewState) {
-//            画一条中线
+            // 画一条中线
             canvas.drawRect(0, height / 2 - line / 2, width, height / 2 + line / 2, paint);
-//            循环向画布上画音频刻度
+            // 循环向画布上画音频刻度
             for (int i = 0, size = notes.size(); i < size; i++) {
                 int noteHeight = notes.get(i);
-//                上半部分
+                // 上半部分
                 float left = width - (noteWidth * (1 + i) + space * i);
                 float top = height / 2 - noteHeight - space - (line / 2);
                 float right = width - (noteWidth * i + space * i);
                 float bottom = height / 2;
                 canvas.drawRect(left, top, right, bottom, paint);
-//                下半部分
+                // 下半部分
                 float refLeft = width - (noteWidth * (1 + i) + space * i);
                 float refTop = height / 2;
                 float refRight = width - (noteWidth * i + space * i);
@@ -133,6 +133,7 @@ public class DynamicWaveView extends View {
 
     /**
      * 添加一个刻度
+     *
      * @param height 高度
      */
     public void addSpectrum(int height) {

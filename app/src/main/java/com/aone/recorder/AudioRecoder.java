@@ -1,12 +1,11 @@
 package com.aone.recorder;
 
 import android.media.MediaRecorder;
-import android.util.Log;
 
 import com.aone.recorder.model.RecordConfig;
+import com.aone.recorder.model.RecordFile;
 import com.aone.recorder.utils.DateUtil;
 
-import java.text.ParseException;
 
 /**
  * @ProjectName: Recorder
@@ -34,10 +33,9 @@ public class AudioRecoder implements MediaRecorder.OnErrorListener, MediaRecorde
     private String mOutputFileName;
     private String mOutputFileFormat;
 
-    private String FileName;
     private String FileCreateTime;
-    private String FilePath;
-    public AudioRecoder(RecordConfig recordConfig) throws ParseException {
+
+    public AudioRecoder(RecordConfig recordConfig) {
         mAudioSource = recordConfig.getAudioSource();
         mAudioSamplingRate = recordConfig.getAudioSamplingRate();
         mAudioChannels = recordConfig.getAudioChannels();
@@ -45,29 +43,28 @@ public class AudioRecoder implements MediaRecorder.OnErrorListener, MediaRecorde
         mAudioEncodingBitRate = recordConfig.getAudioEncodingBitRate();
         mOutputFormat = recordConfig.getOutputFormat();
 
-        mOutputFileFormat = recordConfig.getOutputFileFormat();
-        mOutputFile = recordConfig.getOutputFilePath();
-        Log.e(TAG, "mOutputFile:" + mOutputFile);
         DateUtil dateUtil = new DateUtil();
         String time = dateUtil.getDateTime();
-        mOutputFile += time;
-        mOutputFile += "." + mOutputFileFormat;
-        mOutputFileName = dateUtil.getDateTime() + "." + mOutputFileFormat;
 
-        FileName = time + "." + mOutputFileFormat;
-        FilePath = mOutputFile;
+        mOutputFileFormat = recordConfig.getOutputFileFormat();
+        mOutputFileName = time + "." + mOutputFileFormat;
+
+
+        mOutputFile = recordConfig.getOutputFilePath();
+        mOutputFile += mOutputFileName;
+
         FileCreateTime = dateUtil.strFormatTrans(time);
     }
 
-    public void start(){
+    public void start() {
         try {
             initRecord();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void stop(){
+    public void stop() {
         if (mOnRecordFinishListener != null) {
             mOnRecordFinishListener.onRecordFinish();
         }
@@ -78,20 +75,27 @@ public class AudioRecoder implements MediaRecorder.OnErrorListener, MediaRecorde
         mMediaRecord = new MediaRecorder();
         mMediaRecord.setOnErrorListener(this);
         mMediaRecord.setOnInfoListener(this);
-
+        // 设置录音源
         mMediaRecord.setAudioSource(mAudioSource);
-        mMediaRecord.setAudioSamplingRate(mAudioSamplingRate);
+        // 设置媒体输出格式
         mMediaRecord.setOutputFormat(mOutputFormat);
+        // 设置媒体音频编码器
         mMediaRecord.setAudioEncoder(mAudioEncoder);
+        // 设置媒体音频采样率
+        mMediaRecord.setAudioSamplingRate(mAudioSamplingRate);
+        // 设置媒体音频声道数
         mMediaRecord.setAudioChannels(mAudioChannels);
+        // 设置音频每秒录制的字节数
         mMediaRecord.setAudioEncodingBitRate(mAudioEncodingBitRate);
-
+        // 设置文件保存路径
         mMediaRecord.setOutputFile(mOutputFile);
 
         try {
+            // 媒体录制准备就绪
             mMediaRecord.prepare();
+            // 媒体录制器开始录制
             mMediaRecord.start();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -102,7 +106,7 @@ public class AudioRecoder implements MediaRecorder.OnErrorListener, MediaRecorde
             mMediaRecord.setOnInfoListener(null);
             try {
                 mMediaRecord.stop();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             mMediaRecord.release();
@@ -110,13 +114,14 @@ public class AudioRecoder implements MediaRecorder.OnErrorListener, MediaRecorde
         }
     }
 
+
     private OnRecordFinishListener mOnRecordFinishListener;
 
     private interface OnRecordFinishListener {
         void onRecordFinish();
     }
 
-    public void setOnRecordFinishListener(OnRecordFinishListener listener){
+    public void setOnRecordFinishListener(OnRecordFinishListener listener) {
         mOnRecordFinishListener = listener;
     }
 
@@ -132,27 +137,24 @@ public class AudioRecoder implements MediaRecorder.OnErrorListener, MediaRecorde
 
     }
 
-    public int updateMicStatus(){
+    public int updateMicStatus() {
         double ratio = (double) 100 * mMediaRecord.getMaxAmplitude() / 32767;
-        double db = 0;// 分贝
+        double db;// 分贝
         if (ratio > 1) db = 300 * Math.log10(ratio);
-        else db = 0;
+        else return 0;
         return (int) db;
     }
 
-    public String getFileName(){
-        return FileName;
+    public String getFileName() {
+        return mOutputFileName;
     }
 
-    public String getOutputFileFormat(){
-        return mOutputFileFormat;
-    }
-
-    public String getFileCreateTime(){
-        return FileCreateTime;
-    }
-
-    public String getFilePath(){
-        return FilePath;
+    public RecordFile getRecordFile() {
+        RecordFile recordFile = new RecordFile();
+        recordFile.setFileName(mOutputFileName);
+        recordFile.setFilePath(mOutputFile);
+        recordFile.setFileFormat(mOutputFileFormat);
+        recordFile.setFileCreatedTime(FileCreateTime);
+        return recordFile;
     }
 }

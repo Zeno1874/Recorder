@@ -1,11 +1,10 @@
-package com.aone.recorder.adpater;
+package com.aone.recorder.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,8 +13,6 @@ import com.aone.recorder.R;
 import com.aone.recorder.model.RecordFile;
 import com.aone.recorder.utils.FileUtil;
 import com.aone.recorder.utils.RecordFileUtil;
-import com.aone.recorder.views.StaticWaveView;
-import com.aone.recorder.views.VisualizerView;
 
 import java.util.List;
 
@@ -36,9 +33,7 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
     private List<RecordFile> data;
     private LayoutInflater inflater;
 
-    private String mFileName,
-                   mFilePath;
-    public ListListViewAdapter(Context context, List<RecordFile> data){
+    public ListListViewAdapter(Context context, List<RecordFile> data) {
         mContext = context;
         this.inflater = LayoutInflater.from(context);
         this.data = data;
@@ -65,24 +60,19 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
         final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.item_list_listview, parent,false);
+            convertView = inflater.inflate(R.layout.item_list_listview, parent, false);
             viewHolder.tv_file_name = convertView.findViewById(R.id.tv_file_name);
             viewHolder.tv_file_record_length = convertView.findViewById(R.id.tv_file_record_length);
             viewHolder.tv_file_created_time = convertView.findViewById(R.id.tv_file_created_time);
 
-            viewHolder.ll_SimpleDetail = convertView.findViewById(R.id.ll_SimpleDetail);
-            viewHolder.imgBtn_state = convertView.findViewById(R.id.imgBtn_state);
+
             viewHolder.tv_delete = convertView.findViewById(R.id.tv_delete);
             viewHolder.tv_rename = convertView.findViewById(R.id.tv_rename);
             viewHolder.ll_more = convertView.findViewById(R.id.more);
             convertView.setTag(viewHolder);
-        }else {
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-        viewHolder.visualizerView = convertView.findViewById(R.id.visualizerView);
-
-
 
         viewHolder.tv_file_name.setText(data.get(position).getFileName());
         viewHolder.tv_file_record_length.setText(data.get(position).getFileRecordLength());
@@ -94,7 +84,6 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
         viewHolder.tv_rename.setOnClickListener(this);
         viewHolder.ll_more.setOnClickListener(this);
 
-//        viewHolder.staticWaveView = convertView.findViewById(R.id.staticWaveView);
         return convertView;
     }
 
@@ -105,14 +94,10 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
         switch (v.getId()) {
             case R.id.tv_delete:
                 int chosenPosition = (Integer) v.getTag();
-                RecordFile recordFile = (RecordFile)getItem(chosenPosition);
-
-                mFileName = recordFile.getFileName();
-                mFilePath = recordFile.getFilePath();
-
+                RecordFile recordFile = (RecordFile) getItem(chosenPosition);
                 // 删除记录及文件
-                mRecordFileDAO.deleteFile(mFileName);
-                FileUtil.deleteFile(mFilePath);
+                mRecordFileDAO.deleteFile(recordFile.getFileName());
+                FileUtil.deleteFile(recordFile.getFilePath());
                 // 更新数据
                 data = RecordFileUtil.getListData(mContext);
                 this.notifyDataSetChanged();
@@ -125,17 +110,14 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
         }
     }
 
-    private static class ViewHolder{
+    private static class ViewHolder {
         private TextView tv_file_name;
         private TextView tv_file_created_time;
         private TextView tv_file_record_length;
 
-        private LinearLayout ll_SimpleDetail;
-        private ImageButton imgBtn_state;
         private TextView tv_delete;
         private TextView tv_rename;
         private LinearLayout ll_more;
-        private VisualizerView visualizerView;
     }
 
 

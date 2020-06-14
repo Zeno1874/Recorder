@@ -19,16 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aone.recorder.DAO.RecordConfigDAO;
-import com.aone.recorder.DAO.RecordFileDAO;
 import com.aone.recorder.activities.RecordListActivity;
 import com.aone.recorder.activities.RecordSettingActivity;
 import com.aone.recorder.model.RecordConfig;
 import com.aone.recorder.model.RecordFile;
 import com.aone.recorder.utils.RecordConfigUtil;
+import com.aone.recorder.utils.RecordFileUtil;
 import com.aone.recorder.views.DynamicWaveView;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,19 +36,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 权限
     private static final int REQUEST_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WAKE_LOCK};
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WAKE_LOCK};
 
     // 录音相关
     private AudioRecoder mAudioRecorder;
     private RecordConfigDAO mRecordConfigDAO;
-    private RecordFileDAO mRecordFileDAO;
     private RecordConfig mRecordConfig;
-    private RecordFile mRecordFile;
     private boolean RecordState = true;
 
-    private String dp_outputFileFormat,
-                   dp_audioChannels,
-                   dp_audioSamplingRate;
     // 计时器
     private Timer mTimer;
     private long baseTimer;
@@ -65,18 +59,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView iv_outputFileFormat;
     // 其他
     private Handler mHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 请求权限
         ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSION);
-
 
         // 初始化数据库
         mRecordConfigDAO = new RecordConfigDAO(this);
         mRecordConfigDAO.initConfig(this);
-
+        // 获取配置数据
         mRecordConfig = RecordConfigUtil.getRecordConfig(this);
 
         mHandler = new Handler();
@@ -86,12 +81,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     * 设置事件
+     */
     private void setEvent() {
         imgBtn_recorder.setOnClickListener(this);
         imgBtn_record2list.setOnClickListener(this);
         imgBtn_record2setting.setOnClickListener(this);
     }
 
+    /**
+     * 初始化View
+     */
     private void initView() {
         // 音频可视化
         mDynamicWaveView = findViewById(R.id.waveView);
@@ -106,14 +107,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tv_audioChannels = findViewById(R.id.tv_audioChannels);
         iv_outputFileFormat = findViewById(R.id.iv_outputFileFormat);
 
-        dp_outputFileFormat = RecordConfigUtil.decodeOutputFileFormat(mRecordConfig.getOutputFileFormat());
-        dp_audioChannels = RecordConfigUtil.decodeAudioChannels(mRecordConfig.getAudioChannels());
-        dp_audioSamplingRate = RecordConfigUtil.decodeAudioSamplingRate(mRecordConfig.getAudioSamplingRate());
+        tv_audioSamplingRate.setText(RecordConfigUtil.decodeAudioSamplingRate(mRecordConfig.getAudioSamplingRate()));
+        tv_audioChannels.setText(RecordConfigUtil.decodeAudioChannels(mRecordConfig.getAudioChannels()));
 
-        tv_audioSamplingRate.setText(dp_audioSamplingRate);
-        tv_audioChannels.setText(dp_audioChannels);
-
-        switch (dp_outputFileFormat){
+        switch (RecordConfigUtil.decodeOutputFileFormat(mRecordConfig.getOutputFileFormat())) {
             case "MP3":
                 iv_outputFileFormat.setImageResource(R.drawable.ic_mp3);
                 break;
@@ -136,10 +133,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                permissionToRecordAccepted  = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                permissionToRecordAccepted  = grantResults[2] == PackageManager.PERMISSION_GRANTED;
-                permissionToRecordAccepted  = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                permissionToRecordAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                permissionToRecordAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                permissionToRecordAccepted = grantResults[3] == PackageManager.PERMISSION_GRANTED;
                 break;
 
         }
@@ -151,24 +148,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent;
         switch (v.getId()) {
             case R.id.imgBtn_record:
-                if (RecordState){
+                if (RecordState) {
                     // 开始录音
-                    try {
-                        StartRecord();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    mHandler.post(runnable);
+                    StartRecord();
+
                 } else {
-                    mRecordFileDAO = new RecordFileDAO(this);
-                    mRecordFile = new RecordFile();
-                    mRecordFile.setFileName(mAudioRecorder.getFileName());
-                    mRecordFile.setFileFormat(mAudioRecorder.getOutputFileFormat());
-                    mRecordFile.setFilePath(mAudioRecorder.getFilePath());
-                    mRecordFile.setFileRecordLength(TIMER_RECORD);
-                    mRecordFile.setFileCreatedTime(mAudioRecorder.getFileCreateTime());
-                    mRecordFileDAO.insertFile(mRecordFile);
-                    mRecordFileDAO.close();
                     // 停止录音
                     StopRecord();
                 }
@@ -185,26 +169,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            mDynamicWaveView.addSpectrum(mAudioRecorder.updateMicStatus());
-            mHandler.postDelayed(this, 100);
-        }
-    };
-
-    private void StartRecord() throws ParseException {
+    private void StartRecord() {
         // 变更按钮图案
         imgBtn_recorder.setImageResource(R.drawable.btn_confirm);
 
         mAudioRecorder = new AudioRecoder(mRecordConfig);
         mAudioRecorder.start();
-        Log.e(TAG,"Record Start!");
+        Log.e(TAG, "Record Start!");
 
         mTimer = new Timer();
-        MainActivity.this.baseTimer = SystemClock.elapsedRealtime();
-        @SuppressLint("HandlerLeak")
-        final Handler handler = new Handler(){
+        baseTimer = SystemClock.elapsedRealtime();
+        @SuppressLint("HandlerLeak") final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -215,24 +190,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                int time = (int)((SystemClock.elapsedRealtime() - MainActivity.this.baseTimer) / 1000);
+                int time = (int) ((SystemClock.elapsedRealtime() - MainActivity.this.baseTimer) / 1000);
                 String hh = new DecimalFormat("00").format(time / 3600);
                 String mm = new DecimalFormat("00").format(time % 3600 / 60);
                 String ss = new DecimalFormat("00").format(time % 60);
-                String timeFormat = new String(hh + ":" + mm + ":" + ss);
+                String timeFormat = hh + ":" + mm + ":" + ss;
                 Message msg = new Message();
                 msg.obj = timeFormat;
                 handler.sendMessage(msg);
             }
         };
-        mTimer.schedule(task,0,1000L);
+        mTimer.schedule(task, 0, 1000L);
+        mHandler.post(runnable);
     }
 
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            mDynamicWaveView.addSpectrum(mAudioRecorder.updateMicStatus());
+            mHandler.postDelayed(this, 100);
+        }
+    };
+
     private void StopRecord() {
+        // 将文件记录写入SQLite
+        RecordFile recordFile = mAudioRecorder.getRecordFile();
+        recordFile.setFileRecordLength(TIMER_RECORD);
+        RecordFileUtil.addFileRecord(this, recordFile);
+        // 停止AudioRecorder
         mAudioRecorder.stop();
-        mTimer.cancel();
-        Log.e(TAG,"Record Stop!");
         // 清空计时器
+        TIMER_RECORD = null;
+        if (mTimer != null)
+            mTimer.cancel();
         tv_timer.setText("00:00:00");
         // 变更录音按钮
         imgBtn_recorder.setImageResource(R.drawable.btn_controller);
@@ -240,7 +230,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mHandler.removeCallbacks(runnable);
         mDynamicWaveView.cleanCanvas();
         // 弹窗
-        Toast toast=Toast.makeText(MainActivity.this,"Record Finish.Named: \n"+mAudioRecorder.getFileName(), Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(MainActivity.this, "Record Finish.Named: \n" + mAudioRecorder.getFileName(), Toast.LENGTH_SHORT);
         toast.show();
+        Log.e(TAG, "Record Stop!");
     }
 }

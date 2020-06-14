@@ -1,14 +1,11 @@
 package com.aone.recorder.utils;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.text.format.DateUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * @ProjectName: Recorder
@@ -22,44 +19,27 @@ import java.util.TimeZone;
  * @Desc:
  */
 public class DateUtil {
+    private static final String DATE_FORMAT_FOR_FILE_NAME = "yyyy年MM月dd日HH时mm分ss秒";
+    private static final String DATE_FORMAT_FOR_FILE_CREATED_TIME = "yyyy/MM/dd";
+
     @SuppressLint("SimpleDateFormat")
-    public String getDateTime(){
+    public String getDateTime() {
         Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_FILE_NAME);
         return dateFormat.format(date);
     }
 
     @SuppressLint("SimpleDateFormat")
-    public String strFormatTrans(String time) throws ParseException {
-        DateFormat oldFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
-        Date date = oldFormat.parse(time);
-        SimpleDateFormat newFormat = new SimpleDateFormat("yyyy/MM/dd");
+    public String strFormatTrans(String time) {
+        DateFormat oldFormat = new SimpleDateFormat(DATE_FORMAT_FOR_FILE_NAME);
+        Date date = null;
+        try {
+            date = oldFormat.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat newFormat = new SimpleDateFormat(DATE_FORMAT_FOR_FILE_CREATED_TIME);
+        assert date != null;
         return newFormat.format(date);
-    }
-
-    /**
-     * 格式化String类型时间
-     * @param context
-     * @param dateTime 输入格式："yyyy/MM/dd"
-     * @return 输出格式：2020年6月14日 上午8:00
-     * @throws ParseException
-     */
-    public String dateFormat(Context context, String dateTime) throws ParseException {
-
-        DateFormat iso8601Format = new SimpleDateFormat("yyyy/MM/dd");
-
-        Date date = iso8601Format.parse(dateTime);
-
-        long when = date.getTime();
-        int flags = 0;
-        flags |= DateUtils.FORMAT_SHOW_TIME;
-        flags |= DateUtils.FORMAT_SHOW_DATE;
-        flags |= DateUtils.FORMAT_ABBREV_MONTH;
-        flags |= DateUtils.FORMAT_SHOW_YEAR;
-
-        String finalDateTime = android.text.format.DateUtils.formatDateTime(context,
-                when + TimeZone.getDefault().getOffset(when), flags);
-
-        return finalDateTime;
     }
 }

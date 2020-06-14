@@ -1,6 +1,5 @@
 package com.aone.recorder.views;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -63,7 +62,6 @@ public class StaticWaveView extends View {
         mBytes = model;
         invalidate();
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {

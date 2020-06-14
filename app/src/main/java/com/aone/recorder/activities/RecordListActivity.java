@@ -2,14 +2,9 @@ package com.aone.recorder.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.media.audiofx.Visualizer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -20,12 +15,8 @@ import com.aone.recorder.AudioPlayer;
 import com.aone.recorder.DAO.RecordFileDAO;
 import com.aone.recorder.MainActivity;
 import com.aone.recorder.R;
-import com.aone.recorder.adpater.ListListViewAdapter;
+import com.aone.recorder.adapter.ListListViewAdapter;
 import com.aone.recorder.model.RecordFile;
-import com.aone.recorder.views.StaticWaveView;
-import com.aone.recorder.views.VisualizerView;
-import com.aone.recorder.views.render.BarGraphRenderer;
-import com.aone.recorder.views.render.LineRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +28,13 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
     private RecordFileDAO mRecordFileDAO;
     private RecordFile mRecordFile;
     private List<RecordFile> mRecordFiles;
-    private Visualizer mVisualizer;
     private AudioPlayer mAudioPlayer;
     private boolean lv_list_SimpleDetail_state = true;
     // 控件
     private ImageButton imgBtn_list2record;
     private ListView lv_record_list;
     private TextView tv_notice;
-    private VisualizerView mVisualizerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +47,7 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
         int FileCount = mRecordFileDAO.getFileCount();
 
 
-        if (FileCount != 0){
+        if (FileCount != 0) {
             initData();
             lv_record_list.setAdapter(new ListListViewAdapter(this, mRecordFiles));
             lv_record_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,7 +64,7 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
                         ll_SimpleDetail.setVisibility(View.VISIBLE);
                         imgBtn_state.setImageResource(R.drawable.btn_pause);
                         mAudioPlayer.start();
-                    }else {
+                    } else {
                         ll_SimpleDetail.setVisibility(View.GONE);
                         imgBtn_state.setImageResource(R.drawable.btn_play);
                         mAudioPlayer.stop();
@@ -88,19 +78,21 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void setEvent(){
+    private void setEvent() {
         imgBtn_list2record.setOnClickListener(this);
     }
-    private void initView(){
+
+    private void initView() {
         imgBtn_list2record = findViewById(R.id.imgBtn_list2record);
         lv_record_list = findViewById(R.id.lv_record_list);
         tv_notice = findViewById(R.id.tv_notice);
 
     }
-    public void initData(){
+
+    public void initData() {
         Cursor cursor = mRecordFileDAO.queryFiles();
         mRecordFiles = new ArrayList<>();
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             mRecordFile = new RecordFile();
             mRecordFile.setFileName(cursor.getString(cursor.getColumnIndex("FileName")));
             mRecordFile.setFileFormat(cursor.getString(cursor.getColumnIndex("FileFormat")));

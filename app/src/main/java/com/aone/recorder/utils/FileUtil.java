@@ -14,9 +14,9 @@ import java.io.File;
  * @Desc:
  */
 public class FileUtil {
-    public static void deleteFile(String filePath) {
+    public static boolean deleteFile(String filePath) {
         File file = new File(filePath);
-        file.delete();
+        return file.delete();
 //        if (file.isFile() && file.exists()) {
 //            return file.delete();
 //        }

@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaRecorder;
 
+import java.util.Objects;
+
 /**
  * @ProjectName: Recorder
  * @Package: com.aone.recorder.DAO
@@ -23,16 +25,17 @@ public class RecordConfigDAO {
     private SQLiteDatabase db;
     private Cursor cursor;
 
-    public RecordConfigDAO(Context context){
-        dbHelper = new DBHelper(context,"recorder",null,1);
+    public RecordConfigDAO(Context context) {
+        dbHelper = new DBHelper(context, "recorder", null, 1);
         db = dbHelper.getWritableDatabase();
     }
 
     /**
      * 初始化配置数据表
-     * @param context
+     *
+     * @param context context
      */
-    public void initConfig(Context context){
+    public void initConfig(Context context) {
         ContentValues values = new ContentValues();
         values.put("AudioSource", MediaRecorder.AudioSource.DEFAULT);
         values.put("AudioSamplingRate", 44100);
@@ -40,41 +43,43 @@ public class RecordConfigDAO {
         values.put("AudioChannels", 2);
         values.put("AudioEncoder", MediaRecorder.AudioEncoder.DEFAULT);
         values.put("AudioEncodingBitRate", 192000);
-        values.put("DefaultFilePath", context.getExternalCacheDir().getAbsolutePath() + "/");
+        values.put("DefaultFilePath", Objects.requireNonNull(context.getExternalCacheDir()).getAbsolutePath() + "/");
         values.put("OutputFileFormat", "MP3");
 
-        db.insert(CONFIG_TABLE_NAME,null,values);
+        db.insert(CONFIG_TABLE_NAME, null, values);
     }
 
     /**
      * 更新配置数据表
-     * @param key 键
+     *
+     * @param key   键
      * @param value 值
      */
-    public void updateConfig(String key, String value){
+    public void updateConfig(String key, String value) {
         ContentValues values = new ContentValues();
-        values.put(key,value);
+        values.put(key, value);
 
-        db.update(CONFIG_TABLE_NAME,values,"id = ?",new String[]{"1"});
+        db.update(CONFIG_TABLE_NAME, values, "id = ?", new String[]{"1"});
         close();
     }
 
     /**
      * 获取配置数据表数据集
+     *
      * @return Cursor数据集
      */
-    public Cursor queryConfig(){
+    public Cursor queryConfig() {
         cursor = db.query(CONFIG_TABLE_NAME, new String[]{"AudioSource", "AudioSamplingRate", "OutputFormat", "AudioChannels", "AudioEncoder", "AudioEncodingBitRate", "DefaultFilePath", "OutputFileFormat"}, null, null, null, null, null);
         cursor.moveToNext();
         return cursor;
     }
 
-    public void close(){
-        if (cursor!=null)
+    public void close() {
+        if (cursor != null)
             cursor.close();
-        if (db!=null)
+        if (db != null)
             db.close();
-        if (dbHelper!=null)
+        if (dbHelper != null)
             dbHelper.close();
     }
 

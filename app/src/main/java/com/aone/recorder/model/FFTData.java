@@ -12,8 +12,7 @@ package com.aone.recorder.model;
  * @Desc:
  */
 public class FFTData {
-    public FFTData(byte[] bytes)
-    {
+    public FFTData(byte[] bytes) {
         this.bytes = bytes;
     }
 

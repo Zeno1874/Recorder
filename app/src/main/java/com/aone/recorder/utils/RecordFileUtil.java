@@ -21,12 +21,12 @@ import java.util.List;
  * @Desc:
  */
 public class RecordFileUtil {
-    public static List<RecordFile> getListData(Context context){
+    public static List<RecordFile> getListData(Context context) {
         RecordFileDAO mRecordFileDAO = new RecordFileDAO(context);
         Cursor cursor = mRecordFileDAO.queryFiles();
         List<RecordFile> mRecordFiles = new ArrayList<>();
         RecordFile mRecordFile;
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             mRecordFile = new RecordFile();
             mRecordFile.setFileName(cursor.getString(cursor.getColumnIndex("FileName")));
             mRecordFile.setFileFormat(cursor.getString(cursor.getColumnIndex("FileFormat")));
@@ -39,7 +39,9 @@ public class RecordFileUtil {
         return mRecordFiles;
     }
 
-    public void decodeMP3(){
-
+    public static void addFileRecord(Context context, RecordFile recordFile) {
+        RecordFileDAO mRecordFileDAO = new RecordFileDAO(context);
+        mRecordFileDAO.insertFile(recordFile);
+        mRecordFileDAO.close();
     }
 }

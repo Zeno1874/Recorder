@@ -21,8 +21,10 @@ public class RecordConfig {
     private String OutputFilePath;
     private String OutputFileFormat;
 
-    public RecordConfig(){}
-    public RecordConfig(int AudioSource, int AudioSamplingRate, int OutputFormat, int AudioChannels, int AudioEncoder, int AudioEncodingBitRate, String DefaultFilePath, String OutputFileFormat){
+    public RecordConfig() {
+    }
+
+    public RecordConfig(int AudioSource, int AudioSamplingRate, int OutputFormat, int AudioChannels, int AudioEncoder, int AudioEncodingBitRate, String DefaultFilePath, String OutputFileFormat) {
         this.AudioSource = AudioSource;
         this.AudioSamplingRate = AudioSamplingRate;
         this.OutputFormat = OutputFormat;
