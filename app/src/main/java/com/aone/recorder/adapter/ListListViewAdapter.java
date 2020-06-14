@@ -1,19 +1,27 @@
 package com.aone.recorder.adapter;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aone.recorder.AudioPlayer;
 import com.aone.recorder.DAO.RecordFileDAO;
 import com.aone.recorder.R;
 import com.aone.recorder.model.RecordFile;
 import com.aone.recorder.utils.FileUtil;
 import com.aone.recorder.utils.RecordFileUtil;
+import com.aone.recorder.views.StaticWaveView;
+import com.aone.recorder.views.VisualizerView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,12 +39,21 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
     private static final String TAG = ListListViewAdapter.class.getSimpleName();
     private Context mContext;
     private List<RecordFile> data;
+    private List<ImageButton> PlayImageButtons;
+    private List<ImageButton> PauseImageButtons;
+    private List<View> Views;
     private LayoutInflater inflater;
 
+    private AudioPlayer mAudioPlayer;
+    private int play_id;
     public ListListViewAdapter(Context context, List<RecordFile> data) {
         mContext = context;
         this.inflater = LayoutInflater.from(context);
         this.data = data;
+        this.PlayImageButtons = new ArrayList<>();
+        this.PauseImageButtons = new ArrayList<>();
+        this.Views = new ArrayList<>();
+
     }
 
     @Override
@@ -45,7 +62,7 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
     }
 
     @Override
-    public Object getItem(int position) {
+    public RecordFile getItem(int position) {
         return data.get(position);
     }
 
@@ -61,64 +78,130 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.item_list_listview, parent, false);
+
+            viewHolder.ll_simple_detail = convertView.findViewById(R.id.ll_SimpleDetail);
+
+            viewHolder.imgBtn_play_state = convertView.findViewById(R.id.imgBtn_play_state);
+            viewHolder.imgBtn_pause_state = convertView.findViewById(R.id.imgBtn_pause_state);
+
+            viewHolder.staticWaveView = convertView.findViewById(R.id.staticWaveView);
+            viewHolder.visualizerView = convertView.findViewById(R.id.visualizerView);
+
             viewHolder.tv_file_name = convertView.findViewById(R.id.tv_file_name);
             viewHolder.tv_file_record_length = convertView.findViewById(R.id.tv_file_record_length);
             viewHolder.tv_file_created_time = convertView.findViewById(R.id.tv_file_created_time);
 
-
             viewHolder.tv_delete = convertView.findViewById(R.id.tv_delete);
             viewHolder.tv_rename = convertView.findViewById(R.id.tv_rename);
             viewHolder.ll_more = convertView.findViewById(R.id.more);
+
+
+            PlayImageButtons.add(viewHolder.imgBtn_play_state);
+            PauseImageButtons.add(viewHolder.imgBtn_pause_state);
             convertView.setTag(viewHolder);
+            Views.add(convertView);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
+        // Item info
         viewHolder.tv_file_name.setText(data.get(position).getFileName());
         viewHolder.tv_file_record_length.setText(data.get(position).getFileRecordLength());
         viewHolder.tv_file_created_time.setText(data.get(position).getFileCreatedTime());
 
-        viewHolder.tv_delete.setOnClickListener(this);
-        viewHolder.tv_delete.setTag(position);
+        List<Double> dbs = RecordFileUtil.getDB(data.get(position).getFileDBs());
+        viewHolder.staticWaveView.setData(dbs);
 
+        // play & pause
+        viewHolder.imgBtn_play_state.setOnClickListener(this);
+        viewHolder.imgBtn_pause_state.setOnClickListener(this);
+
+        viewHolder.imgBtn_play_state.setTag(position);
+        viewHolder.imgBtn_pause_state.setTag(position);
+        // VisualizerView
+        viewHolder.visualizerView.setTag(position);
+        // Item Controller
+        viewHolder.tv_delete.setOnClickListener(this);
         viewHolder.tv_rename.setOnClickListener(this);
         viewHolder.ll_more.setOnClickListener(this);
 
+        viewHolder.tv_delete.setTag(position);
+        viewHolder.tv_rename.setTag(position);
+        viewHolder.ll_more.setTag(position);
         return convertView;
     }
 
     @Override
     public void onClick(View v) {
         RecordFileDAO mRecordFileDAO = new RecordFileDAO(mContext);
-
+        int Position;
         switch (v.getId()) {
+            case R.id.imgBtn_play_state:
+                Position = (Integer) v.getTag();
+                String filePath = getItem(Position).getFilePath();
+                if (mAudioPlayer != null) {
+                    mAudioPlayer.stop();
+                    mAudioPlayer.release();
+                    mAudioPlayer = null;
+                    showPlayImageButton(play_id);
+                }
+                mAudioPlayer = new AudioPlayer(filePath, Views.get(Position));
+                mAudioPlayer.start();
+                showPauseImageButton(Position);
+                play_id = Position;
+                break;
+            case R.id.imgBtn_pause_state:
+                Position = (Integer) v.getTag();
+//                if (null != mAudioPlayer && mAudioPlayer.isPlaying()){
+//                    mAudioPlayer.stop();
+//                }
+                mAudioPlayer.stop();
+                mAudioPlayer.release();
+                mAudioPlayer = null;
+                showPlayImageButton(Position);
+
+                break;
             case R.id.tv_delete:
-                int chosenPosition = (Integer) v.getTag();
-                RecordFile recordFile = (RecordFile) getItem(chosenPosition);
+                Position = (Integer) v.getTag();
+                RecordFile recordFile = (RecordFile) getItem(Position);
                 // 删除记录及文件
                 mRecordFileDAO.deleteFile(recordFile.getFileName());
                 FileUtil.deleteFile(recordFile.getFilePath());
                 // 更新数据
                 data = RecordFileUtil.getListData(mContext);
                 this.notifyDataSetChanged();
-
+                for (View view :Views) view.findViewById(R.id.ll_SimpleDetail).setVisibility(View.GONE);
                 break;
             case R.id.tv_rename:
-
             case R.id.more:
                 break;
         }
     }
 
     private static class ViewHolder {
-        private TextView tv_file_name;
-        private TextView tv_file_created_time;
-        private TextView tv_file_record_length;
+        private LinearLayout ll_simple_detail;
+
+        private ImageButton imgBtn_play_state,
+                imgBtn_pause_state;
+
+        private TextView tv_file_name,
+                tv_file_created_time,
+                tv_file_record_length;
 
         private TextView tv_delete;
         private TextView tv_rename;
         private LinearLayout ll_more;
+
+        private VisualizerView visualizerView;
+        private StaticWaveView staticWaveView;
     }
 
+    private void showPlayImageButton(int position){
+        PlayImageButtons.get(position).setVisibility(View.VISIBLE);
+        PauseImageButtons.get(position).setVisibility(View.GONE);
+    }
 
+    private void showPauseImageButton(int position){
+        PlayImageButtons.get(position).setVisibility(View.GONE);
+        PauseImageButtons.get(position).setVisibility(View.VISIBLE);
+    }
 }

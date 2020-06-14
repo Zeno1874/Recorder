@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.aone.recorder.AudioPlayer;
 import com.aone.recorder.DAO.RecordFileDAO;
 import com.aone.recorder.MainActivity;
 import com.aone.recorder.R;
@@ -23,13 +22,13 @@ import java.util.List;
 
 public class RecordListActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = RecordSettingActivity.class.getSimpleName();
+    public static String FilePath;
 
     // 录音配置
     private RecordFileDAO mRecordFileDAO;
     private RecordFile mRecordFile;
     private List<RecordFile> mRecordFiles;
-    private AudioPlayer mAudioPlayer;
-    private boolean lv_list_SimpleDetail_state = true;
+
     // 控件
     private ImageButton imgBtn_list2record;
     private ListView lv_record_list;
@@ -51,25 +50,20 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
             initData();
             lv_record_list.setAdapter(new ListListViewAdapter(this, mRecordFiles));
             lv_record_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
                 @Override
                 public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
-
                     LinearLayout ll_SimpleDetail = view.findViewById(R.id.ll_SimpleDetail);
-                    ImageButton imgBtn_state = view.findViewById(R.id.imgBtn_state);
-                    RecordFile recordFile = mRecordFiles.get(position);
-                    String FilePath = recordFile.getFilePath();
-
-                    if (lv_list_SimpleDetail_state) {
-                        mAudioPlayer = new AudioPlayer(FilePath, view);
-                        ll_SimpleDetail.setVisibility(View.VISIBLE);
-                        imgBtn_state.setImageResource(R.drawable.btn_pause);
-                        mAudioPlayer.start();
-                    } else {
-                        ll_SimpleDetail.setVisibility(View.GONE);
-                        imgBtn_state.setImageResource(R.drawable.btn_play);
-                        mAudioPlayer.stop();
+                    switch (ll_SimpleDetail.getVisibility()) {
+                        case View.GONE:
+                            ll_SimpleDetail.setVisibility(View.VISIBLE);
+                            break;
+                        case View.VISIBLE:
+                            ll_SimpleDetail.setVisibility(View.GONE);
+                            break;
+                        case View.INVISIBLE:
+                            break;
                     }
-                    lv_list_SimpleDetail_state = !lv_list_SimpleDetail_state;
                 }
             });
         }
@@ -99,7 +93,7 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
             mRecordFile.setFilePath(cursor.getString(cursor.getColumnIndex("FilePath")));
             mRecordFile.setFileRecordLength(cursor.getString(cursor.getColumnIndex("FileRecordLength")));
             mRecordFile.setFileCreatedTime(cursor.getString(cursor.getColumnIndex("FileCreatedTime")));
-
+            mRecordFile.setFileDBs(cursor.getString(cursor.getColumnIndex("FileDBs")));
             mRecordFiles.add(mRecordFile);
         }
     }
