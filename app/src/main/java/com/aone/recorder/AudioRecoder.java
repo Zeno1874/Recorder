@@ -1,9 +1,12 @@
 package com.aone.recorder;
 
 import android.media.MediaRecorder;
+import android.util.Log;
 
 import com.aone.recorder.model.RecordConfig;
 import com.aone.recorder.utils.DateUtil;
+
+import java.text.ParseException;
 
 /**
  * @ProjectName: Recorder
@@ -31,7 +34,10 @@ public class AudioRecoder implements MediaRecorder.OnErrorListener, MediaRecorde
     private String mOutputFileName;
     private String mOutputFileFormat;
 
-    public AudioRecoder(RecordConfig recordConfig){
+    private String FileName;
+    private String FileCreateTime;
+    private String FilePath;
+    public AudioRecoder(RecordConfig recordConfig) throws ParseException {
         mAudioSource = recordConfig.getAudioSource();
         mAudioSamplingRate = recordConfig.getAudioSamplingRate();
         mAudioChannels = recordConfig.getAudioChannels();
@@ -41,12 +47,16 @@ public class AudioRecoder implements MediaRecorder.OnErrorListener, MediaRecorde
 
         mOutputFileFormat = recordConfig.getOutputFileFormat();
         mOutputFile = recordConfig.getOutputFilePath();
-
+        Log.e(TAG, "mOutputFile:" + mOutputFile);
         DateUtil dateUtil = new DateUtil();
-        mOutputFile += dateUtil.getDateTime();
+        String time = dateUtil.getDateTime();
+        mOutputFile += time;
         mOutputFile += "." + mOutputFileFormat;
-
         mOutputFileName = dateUtil.getDateTime() + "." + mOutputFileFormat;
+
+        FileName = time + "." + mOutputFileFormat;
+        FilePath = mOutputFile;
+        FileCreateTime = dateUtil.strFormatTrans(time);
     }
 
     public void start(){
@@ -130,11 +140,19 @@ public class AudioRecoder implements MediaRecorder.OnErrorListener, MediaRecorde
         return (int) db;
     }
 
-    public String getOutputFileName(){
-        return mOutputFileName;
+    public String getFileName(){
+        return FileName;
     }
 
     public String getOutputFileFormat(){
         return mOutputFileFormat;
+    }
+
+    public String getFileCreateTime(){
+        return FileCreateTime;
+    }
+
+    public String getFilePath(){
+        return FilePath;
     }
 }
