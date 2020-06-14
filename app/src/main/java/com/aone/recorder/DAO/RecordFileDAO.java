@@ -37,18 +37,18 @@ public class RecordFileDAO {
         values.put("FilePath", recordFile.getFilePath());
         values.put("FileRecordLength", recordFile.getFileRecordLength());
         values.put("FileCreatedTime", recordFile.getFileCreatedTime());
-
+        values.put("FileDBs", recordFile.getFileDBs());
         db.insert(LIST_TABLE_NAME, null, values);
         close();
     }
 
     /**
-     * 获取配置数据表数据集
+     * 获取录音文件数据集
      *
      * @return Cursor数据集
      */
     public Cursor queryFiles() {
-        cursor = db.query(LIST_TABLE_NAME, new String[]{"FileName", "FileFormat", "FilePath", "FileRecordLength", "FileCreatedTime"}, null, null, null, null, null);
+        cursor = db.query(LIST_TABLE_NAME, new String[]{"FileName", "FileFormat", "FilePath", "FileRecordLength", "FileCreatedTime", "FileDBs"}, null, null, null, null, null);
         return cursor;
     }
 

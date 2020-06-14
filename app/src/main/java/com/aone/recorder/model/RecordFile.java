@@ -17,16 +17,17 @@ public class RecordFile {
     private String FilePath;
     private String FileRecordLength;
     private String FileCreatedTime;
-
+    private String FileDBs;
     public RecordFile() {
     }
 
-    public RecordFile(String FileName, String FileFormat, String FilePath, String FileRecordLength, String FileCreatedTime) {
+    public RecordFile(String FileName, String FileFormat, String FilePath, String FileRecordLength, String FileCreatedTime, String FileDBs) {
         this.FileName = FileName;
         this.FileFormat = FileFormat;
         this.FilePath = FilePath;
         this.FileRecordLength = FileRecordLength;
         this.FileCreatedTime = FileCreatedTime;
+        this.FileDBs = FileDBs;
     }
 
     public String getFileName() {
@@ -67,5 +68,13 @@ public class RecordFile {
 
     public void setFileCreatedTime(String fileCreatedTime) {
         FileCreatedTime = fileCreatedTime;
+    }
+
+    public String getFileDBs() {
+        return FileDBs;
+    }
+
+    public void setFileDBs(String fileDBs) {
+        FileDBs = fileDBs;
     }
 }
