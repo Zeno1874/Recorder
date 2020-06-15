@@ -37,7 +37,7 @@ public class RecordFileDAO {
         values.put("FilePath", recordFile.getFilePath());
         values.put("FileRecordLength", recordFile.getFileRecordLength());
         values.put("FileCreatedTime", recordFile.getFileCreatedTime());
-        values.put("FileDBs", recordFile.getFileDBs());
+        values.put("FileSpectrum", recordFile.getFileSpectrum());
         db.insert(LIST_TABLE_NAME, null, values);
         close();
     }
@@ -48,7 +48,7 @@ public class RecordFileDAO {
      * @return Cursor数据集
      */
     public Cursor queryFiles() {
-        cursor = db.query(LIST_TABLE_NAME, new String[]{"FileName", "FileFormat", "FilePath", "FileRecordLength", "FileCreatedTime", "FileDBs"}, null, null, null, null, null);
+        cursor = db.query(LIST_TABLE_NAME, new String[]{"FileName", "FileFormat", "FilePath", "FileRecordLength", "FileCreatedTime", "FileSpectrum"}, null, null, null, null, null);
         return cursor;
     }
 

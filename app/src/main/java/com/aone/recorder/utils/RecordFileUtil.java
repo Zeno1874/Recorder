@@ -21,7 +21,7 @@ import java.util.List;
  * @Desc:
  */
 public class RecordFileUtil {
-    public static List<RecordFile> getListData(Context context) {
+    public static List<RecordFile> getRecordFileList(Context context) {
         RecordFileDAO mRecordFileDAO = new RecordFileDAO(context);
         Cursor cursor = mRecordFileDAO.queryFiles();
         List<RecordFile> mRecordFiles = new ArrayList<>();
@@ -33,19 +33,19 @@ public class RecordFileUtil {
             mRecordFile.setFilePath(cursor.getString(cursor.getColumnIndex("FilePath")));
             mRecordFile.setFileRecordLength(cursor.getString(cursor.getColumnIndex("FileRecordLength")));
             mRecordFile.setFileCreatedTime(cursor.getString(cursor.getColumnIndex("FileCreatedTime")));
-            mRecordFile.setFileDBs(cursor.getString(cursor.getColumnIndex("FileDBs")));
+            mRecordFile.setFileSpectrum(cursor.getString(cursor.getColumnIndex("FileSpectrum")));
             mRecordFiles.add(mRecordFile);
         }
         return mRecordFiles;
     }
 
-    public static void addFileRecord(Context context, RecordFile recordFile) {
+    public static void addRecordFile(Context context, RecordFile recordFile) {
         RecordFileDAO mRecordFileDAO = new RecordFileDAO(context);
         mRecordFileDAO.insertFile(recordFile);
         mRecordFileDAO.close();
     }
 
-    public static List<Double> getDB(String strRecordDBs) {
+    public static List<Double> getRecordFileSpectrum(String strRecordDBs) {
 
         List<Double> RecordDBs = new ArrayList<>();
         List<Double> temp = new ArrayList<>();

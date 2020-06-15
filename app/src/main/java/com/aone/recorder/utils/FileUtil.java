@@ -16,7 +16,11 @@ import java.io.File;
 public class FileUtil {
     public static void deleteFile(String filePath) {
         File file = new File(filePath);
-        if (file.isFile() && file.exists()) file.delete();
+        if (isFile(filePath)) file.delete();
     }
 
+    public static boolean isFile(String filePath){
+        File file = new File(filePath);
+        return file.isFile() && file.exists();
+    }
 }

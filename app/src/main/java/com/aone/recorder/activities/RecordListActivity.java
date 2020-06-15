@@ -98,7 +98,7 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
             mRecordFile.setFilePath(cursor.getString(cursor.getColumnIndex("FilePath")));
             mRecordFile.setFileRecordLength(cursor.getString(cursor.getColumnIndex("FileRecordLength")));
             mRecordFile.setFileCreatedTime(cursor.getString(cursor.getColumnIndex("FileCreatedTime")));
-            mRecordFile.setFileDBs(cursor.getString(cursor.getColumnIndex("FileDBs")));
+            mRecordFile.setFileSpectrum(cursor.getString(cursor.getColumnIndex("FileSpectrum")));
             mRecordFiles.add(mRecordFile);
         }
     }

@@ -226,8 +226,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.e(TAG, str.toString());
         RecordFile recordFile = mAudioRecorder.getRecordFile();
         recordFile.setFileRecordLength(TIMER_RECORD);
-        recordFile.setFileDBs(str.toString());
-        RecordFileUtil.addFileRecord(this, recordFile);
+        recordFile.setFileSpectrum(str.toString());
+        RecordFileUtil.addRecordFile(this, recordFile);
         // 停止AudioRecorder
         mAudioRecorder.stop();
         // 清空计时器

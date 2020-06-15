@@ -116,7 +116,7 @@ this.TimerTextViews = new ArrayList<>();
         viewHolder.tv_file_created_time.setText(data.get(position).getFileCreatedTime());
         viewHolder.tv_file_record_length2.setText(data.get(position).getFileRecordLength());
 
-        List<Double> dbs = RecordFileUtil.getDB(data.get(position).getFileDBs());
+        List<Double> dbs = RecordFileUtil.getRecordFileSpectrum(data.get(position).getFileSpectrum());
         viewHolder.staticWaveView.setData(dbs);
 
         // play & pause
@@ -178,7 +178,7 @@ this.TimerTextViews = new ArrayList<>();
                 mRecordFileDAO.deleteFile(recordFile.getFileName());
                 FileUtil.deleteFile(recordFile.getFilePath());
                 // 更新数据
-                data = RecordFileUtil.getListData(mContext);
+                data = RecordFileUtil.getRecordFileList(mContext);
                 this.notifyDataSetChanged();
                 for (View view : Views)
                     view.findViewById(R.id.ll_SimpleDetail).setVisibility(View.GONE);
