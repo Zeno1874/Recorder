@@ -44,6 +44,7 @@ public class DynamicWaveView extends View {
         音符画笔
      */
     private Paint paint;
+    private Paint paint2;
     /*
         倒影画笔
      */
@@ -98,9 +99,11 @@ public class DynamicWaveView extends View {
     private void init() {
         // 初始化画笔
         paint = new Paint();
+        paint2 = new Paint();
         reflectionPaint = new Paint();
 
         paint.setColor(color);
+        paint2.setColor(Color.parseColor("#bb5151"));
         reflectionPaint.setColor(reflectionColor);
     }
 
@@ -109,6 +112,7 @@ public class DynamicWaveView extends View {
         super.onDraw(canvas);
         float width = getMeasuredWidth();
         float height = getMeasuredHeight();
+
         if (ViewState) {
             // 画一条中线
             canvas.drawRect(0, height / 2 - line / 2, width, height / 2 + line / 2, paint);
@@ -120,13 +124,19 @@ public class DynamicWaveView extends View {
                 float top = height / 2 - noteHeight - space - (line / 2);
                 float right = width - (noteWidth * i + space * i);
                 float bottom = height / 2;
-                canvas.drawRect(left, top, right, bottom, paint);
                 // 下半部分
                 float refLeft = width - (noteWidth * (1 + i) + space * i);
                 float refTop = height / 2;
                 float refRight = width - (noteWidth * i + space * i);
                 float refBottom = height / 2 + noteHeight + space + line / 2;
-                canvas.drawRect(refLeft, refTop, refRight, refBottom, reflectionPaint);
+
+                if (i == 0){
+                    canvas.drawRect(left, top, right, bottom, paint2);
+                    canvas.drawRect(refLeft, refTop, refRight, refBottom, paint2);
+                }else {
+                    canvas.drawRect(left, top, right, bottom, paint);
+                    canvas.drawRect(refLeft, refTop, refRight, refBottom, paint);
+                }
             }
         }
     }

@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView iv_outputFileFormat;
     // 其他
     private Handler mHandler;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 请求权限
         ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSION);
+
 
         // 初始化数据库
         mRecordConfigDAO = new RecordConfigDAO(this);
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mHandler = new Handler();
         RecordDBs = new ArrayList<>();
+
         initView();
         setEvent();
 
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void StartRecord() {
         // 变更按钮图案
-        imgBtn_recorder.setImageResource(R.drawable.btn_confirm);
+        imgBtn_recorder.setImageResource(R.drawable.ic_confirm);
 
         mAudioRecorder = new AudioRecoder(mRecordConfig);
         mAudioRecorder.start();
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mTimer.cancel();
         tv_timer.setText("00:00:00");
         // 变更录音按钮
-        imgBtn_recorder.setImageResource(R.drawable.btn_controller);
+        imgBtn_recorder.setImageResource(R.drawable.ic_controller);
         // 音频可视化清空
         mHandler.removeCallbacks(runnable);
         mDynamicWaveView.cleanCanvas();

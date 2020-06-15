@@ -109,7 +109,7 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.rl_setting_outputFileFormat_select:
                 if (lv_setting_outputFileFormat_state) {
-                    imgBtn_setting_outputFileFormat.setImageResource(R.drawable.btn_arrow_down);
+                    imgBtn_setting_outputFileFormat.setImageResource(R.drawable.ic_arrow_down);
                     lv_setting_outputFileFormat.setVisibility(View.VISIBLE);
                     // 设置适配器
                     lv_setting_outputFileFormat.setAdapter(new SettingListViewAdapter(this, OutputFileFormatList));
@@ -120,19 +120,19 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
                             tv_setting_outputFileFormat.setText(OutputFileFormatList.get(position));
                             String value = RecordConfigUtil.encodeOutputFileFormat(OutputFileFormatList.get(position));
                             mRecordConfigDAO.updateConfig("OutputFileFormat", value);
-                            imgBtn_setting_outputFileFormat.setImageResource(R.drawable.btn_arrow_right);
+                            imgBtn_setting_outputFileFormat.setImageResource(R.drawable.ic_arrow_right);
                             lv_setting_outputFileFormat.setVisibility(View.GONE);
                         }
                     });
                 } else {
-                    imgBtn_setting_outputFileFormat.setImageResource(R.drawable.btn_arrow_right);
+                    imgBtn_setting_outputFileFormat.setImageResource(R.drawable.ic_arrow_right);
                     lv_setting_outputFileFormat.setVisibility(View.GONE);
                 }
                 lv_setting_outputFileFormat_state = !lv_setting_outputFileFormat_state;
                 break;
             case R.id.rl_setting_audioChannels_select:
                 if (lv_setting_audioChannels_state) {
-                    imgBtn_setting_audioChannels.setImageResource(R.drawable.btn_arrow_down);
+                    imgBtn_setting_audioChannels.setImageResource(R.drawable.ic_arrow_down);
                     lv_setting_audioChannels.setVisibility(View.VISIBLE);
                     // 设置适配器
                     lv_setting_audioChannels.setAdapter(new SettingListViewAdapter(this, AudioChannelsList));
@@ -143,19 +143,19 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
                             tv_setting_audioChannels.setText(AudioChannelsList.get(position));
                             String value = String.valueOf(RecordConfigUtil.encodeAudioChannels(AudioChannelsList.get(position)));
                             mRecordConfigDAO.updateConfig("AudioChannels", value);
-                            imgBtn_setting_audioChannels.setImageResource(R.drawable.btn_arrow_right);
+                            imgBtn_setting_audioChannels.setImageResource(R.drawable.ic_arrow_right);
                             lv_setting_audioChannels.setVisibility(View.GONE);
                         }
                     });
                 } else {
-                    imgBtn_setting_audioChannels.setImageResource(R.drawable.btn_arrow_right);
+                    imgBtn_setting_audioChannels.setImageResource(R.drawable.ic_arrow_right);
                     lv_setting_audioChannels.setVisibility(View.GONE);
                 }
                 lv_setting_audioChannels_state = !lv_setting_audioChannels_state;
                 break;
             case R.id.rl_setting_audioSamplingRate_select:
                 if (lv_setting_audioSamplingRate_state) {
-                    imgBtn_setting_audioSamplingRate.setImageResource(R.drawable.btn_arrow_down);
+                    imgBtn_setting_audioSamplingRate.setImageResource(R.drawable.ic_arrow_down);
                     lv_setting_audioSamplingRate.setVisibility(View.VISIBLE);
                     // 设置适配器
                     lv_setting_audioSamplingRate.setAdapter(new SettingListViewAdapter(this, AudioSamplingRateList));
@@ -166,12 +166,12 @@ public class RecordSettingActivity extends AppCompatActivity implements View.OnC
                             tv_setting_audioSamplingRate.setText(AudioSamplingRateList.get(position));
                             String value = String.valueOf(RecordConfigUtil.encodeAudioSamplingRate(AudioSamplingRateList.get(position)));
                             mRecordConfigDAO.updateConfig("AudioSamplingRate", value);
-                            imgBtn_setting_audioSamplingRate.setImageResource(R.drawable.btn_arrow_right);
+                            imgBtn_setting_audioSamplingRate.setImageResource(R.drawable.ic_arrow_right);
                             lv_setting_audioSamplingRate.setVisibility(View.GONE);
                         }
                     });
                 } else {
-                    imgBtn_setting_audioSamplingRate.setImageResource(R.drawable.btn_arrow_right);
+                    imgBtn_setting_audioSamplingRate.setImageResource(R.drawable.ic_arrow_right);
                     lv_setting_audioSamplingRate.setVisibility(View.GONE);
                 }
                 lv_setting_audioSamplingRate_state = !lv_setting_audioSamplingRate_state;

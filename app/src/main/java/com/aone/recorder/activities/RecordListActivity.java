@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -22,7 +25,6 @@ import java.util.List;
 
 public class RecordListActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = RecordSettingActivity.class.getSimpleName();
-    public static String FilePath;
 
     // 录音配置
     private RecordFileDAO mRecordFileDAO;
@@ -30,7 +32,8 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
     private List<RecordFile> mRecordFiles;
 
     // 控件
-    private ImageButton imgBtn_list2record;
+    private ImageButton imgBtn_list2record,
+            imgBtn_menu;
     private ListView lv_record_list;
     private TextView tv_notice;
 
@@ -74,10 +77,12 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
 
     private void setEvent() {
         imgBtn_list2record.setOnClickListener(this);
+        imgBtn_menu.setOnClickListener(this);
     }
 
     private void initView() {
         imgBtn_list2record = findViewById(R.id.imgBtn_list2record);
+        imgBtn_menu = findViewById(R.id.imgBtn_menu);
         lv_record_list = findViewById(R.id.lv_record_list);
         tv_notice = findViewById(R.id.tv_notice);
 
@@ -105,8 +110,19 @@ public class RecordListActivity extends AppCompatActivity implements View.OnClic
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.imgBtn_menu:
+                openOptionsMenu();
+                Log.e(TAG,"Menu Button onClick");
+                break;
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.list_menu,menu);
+        Log.e(TAG,"Menu Display");
+        return true;
+    }
 }
 

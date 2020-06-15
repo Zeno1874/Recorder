@@ -1,6 +1,10 @@
 package com.aone.recorder.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +15,7 @@ import android.widget.TextView;
 
 import com.aone.recorder.AudioPlayer;
 import com.aone.recorder.DAO.RecordFileDAO;
+import com.aone.recorder.MainActivity;
 import com.aone.recorder.R;
 import com.aone.recorder.model.RecordFile;
 import com.aone.recorder.utils.FileUtil;
@@ -18,8 +23,11 @@ import com.aone.recorder.utils.RecordFileUtil;
 import com.aone.recorder.views.StaticWaveView;
 import com.aone.recorder.views.VisualizerView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @ProjectName: Recorder
@@ -36,6 +44,7 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
     private static final String TAG = ListListViewAdapter.class.getSimpleName();
     private Context mContext;
     private List<RecordFile> data;
+    private List<TextView> TimerTextViews;
     private List<ImageButton> PlayImageButtons;
     private List<ImageButton> PauseImageButtons;
     private List<View> Views;
@@ -43,6 +52,7 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
 
     private AudioPlayer mAudioPlayer;
     private int play_id;
+    public static String timerStr;
     public ListListViewAdapter(Context context, List<RecordFile> data) {
         mContext = context;
         this.inflater = LayoutInflater.from(context);
@@ -50,7 +60,7 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
         this.PlayImageButtons = new ArrayList<>();
         this.PauseImageButtons = new ArrayList<>();
         this.Views = new ArrayList<>();
-
+this.TimerTextViews = new ArrayList<>();
     }
 
     @Override
@@ -87,12 +97,12 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
             viewHolder.tv_file_name = convertView.findViewById(R.id.tv_file_name);
             viewHolder.tv_file_record_length = convertView.findViewById(R.id.tv_file_record_length);
             viewHolder.tv_file_created_time = convertView.findViewById(R.id.tv_file_created_time);
-
+            viewHolder.tv_file_record_length2 = convertView.findViewById(R.id.tv_file_record_length_timer);
             viewHolder.tv_delete = convertView.findViewById(R.id.tv_delete);
             viewHolder.tv_rename = convertView.findViewById(R.id.tv_rename);
             viewHolder.ll_more = convertView.findViewById(R.id.more);
 
-
+            TimerTextViews.add(viewHolder.tv_file_record_length);
             PlayImageButtons.add(viewHolder.imgBtn_play_state);
             PauseImageButtons.add(viewHolder.imgBtn_pause_state);
             convertView.setTag(viewHolder);
@@ -104,6 +114,7 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
         viewHolder.tv_file_name.setText(data.get(position).getFileName());
         viewHolder.tv_file_record_length.setText(data.get(position).getFileRecordLength());
         viewHolder.tv_file_created_time.setText(data.get(position).getFileCreatedTime());
+        viewHolder.tv_file_record_length2.setText(data.get(position).getFileRecordLength());
 
         List<Double> dbs = RecordFileUtil.getDB(data.get(position).getFileDBs());
         viewHolder.staticWaveView.setData(dbs);
@@ -130,43 +141,47 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
     @Override
     public void onClick(View v) {
         RecordFileDAO mRecordFileDAO = new RecordFileDAO(mContext);
-        int Position;
+        final int position;
         switch (v.getId()) {
             case R.id.imgBtn_play_state:
-                Position = (Integer) v.getTag();
-                String filePath = getItem(Position).getFilePath();
+                position = (Integer) v.getTag();
+                String filePath = getItem(position).getFilePath();
                 if (mAudioPlayer != null) {
                     mAudioPlayer.stop();
                     mAudioPlayer.release();
                     mAudioPlayer = null;
                     showPlayImageButton(play_id);
                 }
-                mAudioPlayer = new AudioPlayer(filePath, Views.get(Position));
+                timerStr = data.get(position).getFileRecordLength();
+                mAudioPlayer = new AudioPlayer(filePath, timerStr, Views.get(position));
                 mAudioPlayer.start();
-                showPauseImageButton(Position);
-                play_id = Position;
+
+                showPauseImageButton(position);
+                play_id = position;
                 break;
             case R.id.imgBtn_pause_state:
-                Position = (Integer) v.getTag();
+                position = (Integer) v.getTag();
 //                if (null != mAudioPlayer && mAudioPlayer.isPlaying()){
 //                    mAudioPlayer.stop();
 //                }
                 mAudioPlayer.stop();
                 mAudioPlayer.release();
                 mAudioPlayer = null;
-                showPlayImageButton(Position);
+                TimerTextViews.get(position).setText(data.get(position).getFileRecordLength());
+                showPlayImageButton(position);
 
                 break;
             case R.id.tv_delete:
-                Position = (Integer) v.getTag();
-                RecordFile recordFile = (RecordFile) getItem(Position);
+                position = (Integer) v.getTag();
+                RecordFile recordFile = (RecordFile) getItem(position);
                 // 删除记录及文件
                 mRecordFileDAO.deleteFile(recordFile.getFileName());
                 FileUtil.deleteFile(recordFile.getFilePath());
                 // 更新数据
                 data = RecordFileUtil.getListData(mContext);
                 this.notifyDataSetChanged();
-                for (View view :Views) view.findViewById(R.id.ll_SimpleDetail).setVisibility(View.GONE);
+                for (View view : Views)
+                    view.findViewById(R.id.ll_SimpleDetail).setVisibility(View.GONE);
                 break;
             case R.id.tv_rename:
             case R.id.more:
@@ -182,7 +197,8 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
 
         private TextView tv_file_name,
                 tv_file_created_time,
-                tv_file_record_length;
+                tv_file_record_length,
+                tv_file_record_length2;
 
         private TextView tv_delete;
         private TextView tv_rename;
@@ -192,12 +208,12 @@ public class ListListViewAdapter extends BaseAdapter implements View.OnClickList
         private StaticWaveView staticWaveView;
     }
 
-    private void showPlayImageButton(int position){
+    private void showPlayImageButton(int position) {
         PlayImageButtons.get(position).setVisibility(View.VISIBLE);
         PauseImageButtons.get(position).setVisibility(View.GONE);
     }
 
-    private void showPauseImageButton(int position){
+    private void showPauseImageButton(int position) {
         PlayImageButtons.get(position).setVisibility(View.GONE);
         PauseImageButtons.get(position).setVisibility(View.VISIBLE);
     }

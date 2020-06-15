@@ -7,33 +7,48 @@
     android:orientation="vertical"
     tools:context=".activities.RecordListActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <ImageButton
             android:id="@+id/imgBtn_list2record"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/btn_arrow_left" />
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_left"
+            android:scaleType="fitXY"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/imgBtn_list2record"
             android:fontFamily="@font/gilroy_regular"
             android:text="@string/activity_record_list_title"
             android:textColor="@color/primaryTextColor"
             android:textSize="24sp" />
-    </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/imgBtn_menu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_menu"
+            android:scaleType="fitXY"/>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/lv_record_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp" />
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"/>
 
     <TextView
         android:id="@+id/tv_notice"
